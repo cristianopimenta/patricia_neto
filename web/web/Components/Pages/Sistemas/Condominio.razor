@@ -1,0 +1,99 @@
+﻿@page "/Sistemas/Condominio"
+
+@using web.Components.Layout
+@layout MainLayout
+
+
+@inject MudBlazor.ISnackbar snackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+@inject IDialogService DialogService
+@rendermode InteractiveServer
+
+
+
+<PageTitle>OTMZ</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+            <MudGrid style="position: relative;  padding: 50px;">
+                <MudItem xs="12">
+                    <MudPaper Class="d-flex align-items-center justify-content-between"
+                              Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+                        <div class="d-flex align-items-center">
+                            <MudIcon Icon="@Icons.Material.Filled.AddBusiness" Color="Color.Warning" Size="Size.Large" />
+                            <MudText Class="ml-2" Typo="Typo.h4" Color="@Color.Warning">Cadastro de Condomínio</MudText>
+                        </div>
+                       
+                    </MudPaper>
+                </MudItem>
+
+            </MudGrid>
+        
+        <MudCard Elevation="4" Style="padding: 20px;">
+            <MudCardContent>
+                <MudForm >
+                    <MudTabs @bind-ActivePanelIndex="@activeTabIndex">
+                        <MudTabPanel Text="Informações Básicas">
+                            <MudSpacer/>
+                            <MudTextField @bind-Value="condominio.CNPJ" Label="CNPJ" Disabled="true" />
+                            <MudTextField @bind-Value="condominio.UsuarioIdMestre" Label="ADM GERAL " Disabled="true" />
+                        
+                            <MudCheckBox T="bool?" @bind-Checked="condominio.Ativo" Label="Ativo" />
+                            <MudDatePicker @bind-Date="condominio.DataCadastro" Label="Data de Cadastro" />
+                            <MudDatePicker @bind-Date="condominio.DataAbertura" Label="Data de Abertura" />
+                        </MudTabPanel>
+
+                        <MudTabPanel Text="Parametrizações">
+                            <MudCheckBox T="bool?" @bind-Checked="condominio.ExibirCampoFilipeta" Label="Exibir Campo Filipeta" />
+                            <MudCheckBox T="bool?" @bind-Checked="condominio.HabilitarListaFerramentasPrestador" Label="Habilitar Lista Ferramentas Prestador" />
+                            <MudCheckBox T="bool?" @bind-Checked="condominio.UsarDigitosCPFFilipeta" Label="Usar Dígitos CPF Filipeta" />
+                            <MudCheckBox T="bool?" @bind-Checked="condominio.UsarPlacaFilipeta" Label="Usar Placa Filipeta" />
+                            <!-- Continue adicionando os outros campos de parametrização... -->
+                        </MudTabPanel>
+
+                        <MudTabPanel Text="Padrões de Liberação">
+                            <MudTextField @bind-Value="condominio.VisitantesHorarioPermitidoLiberacaoDas" Label="Horário Permitido Visitantes (Das)" />
+                            <MudTextField @bind-Value="condominio.VisitantesHorarioPermitidoLiberacaoAs" Label="Horário Permitido Visitantes (Até)" />
+                            <MudTextField @bind-Value="condominio.PrestadoresHorarioPermitidoLiberacaoDas" Label="Horário Permitido Prestadores (Das)" />
+                            <MudTextField @bind-Value="condominio.PrestadoresHorarioPermitidoLiberacaoAs" Label="Horário Permitido Prestadores (Até)" />
+                            <!-- Continue adicionando os outros campos de liberação... -->
+                        </MudTabPanel>
+
+                        <MudTabPanel Text="Instruções de Pânico">
+                            <MudTextField @bind-Value="condominio.Instrucao_um" Label="Instrução 1" />
+                            <MudTextField @bind-Value="condominio.Instrucao_dois" Label="Instrução 2" />
+                            <MudTextField @bind-Value="condominio.Instrucao_tres" Label="Instrução 3" />
+                        </MudTabPanel>
+                    </MudTabs>
+
+                    
+                </MudForm>
+            </MudCardContent>
+            <MudCardActions>
+                @if (activeTabIndex == 4)
+                {
+                    <MudButton OnClick="Salvar" Color="Color.Primary">Salvar</MudButton>
+                    <MudButton OnClick="Cancelar" Color="Color.Secondary">Cancelar</MudButton>
+                }
+            </MudCardActions>
+        </MudCard>
+
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    private CondominioModel condominio = new CondominioModel(cnpj: "",usuarioIdMestre:"");
+    private int activeTabIndex = 0;
+
+    private void Salvar()
+    {
+        // Implementar lógica de salvamento
+    }
+
+    private void Cancelar()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

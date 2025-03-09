@@ -1,0 +1,111 @@
+﻿@page "/Cadastros/Cadastros"
+
+@using web.Components.Layout
+@layout MainLayout
+@using static MudBlazor.Icons.Material
+
+@rendermode InteractiveServer
+@inject MudBlazor.ISnackbar snackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+
+
+<PageTitle>OTMZ</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+
+        <MudText Align="Align.Center" Class="titulo-text">Módulos de cadastros</MudText>
+
+
+        <div class="button-container">
+
+            <MudButton Class="custom-button-in" OnClick="() => AssociadosMoradores()">
+                <MudImage Src="/imagem/icones/moradores.png" Alt="Moradores" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                PESSOAS
+            </MudButton>            
+            <MudButton Class="custom-button-in" OnClick="() => Permanentes()">
+                <MudImage Src="/imagem/icones/permanentes.png" Alt="Permanentes" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                PERMANENTES
+            </MudButton>            
+            <MudButton Class="custom-button-in" OnClick="() => Temporarios()">
+                <MudImage Src="/imagem/icones/temporario.png" Alt="Temporários" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                TEMPORÁRIOS
+            </MudButton> 
+            
+        </div>
+        <div class="button-container">
+            <MudButton OnClick="() => Empresas()" Class="custom-button-in">
+                <MudImage Src="/imagem/icones/empresas.png" Alt="Conominios" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                EMPRESAS
+            </MudButton>
+            <MudButton OnClick="() => Imoveis()" Class="custom-button-in">
+                <MudImage Src="/imagem/icones/imoveis.png" Alt="Imóveis" Width="50" Height="50" Style="margin-bottom: 12px;"/>
+                IMÓVEIS HORIZONTAIS
+            </MudButton>
+             <MudButton OnClick="() => ImoveisVertical()" Class="custom-button-in">
+                <MudImage Src="/imagem/icones/imoveis.png" Alt="Imóveis" Width="50" Height="50" Style="margin-bottom: 12px;"/>
+                IMÓVEIS VERTICAIS / GALERIAS
+            </MudButton>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <h2>Usuário não autorizado...</h2>
+       
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+
+    private void Financeiro()
+    {
+        Navigation.NavigateTo("/Financeiro/Financeiro");
+    } 
+    private void AssociadosMoradores()
+    {
+        HtipoMorador.TipoMorador = "Pessoas";
+        Navigation.NavigateTo("/Cadastros/Pessoas/Lista");
+    }
+    private void Permanentes()
+    {
+        HtipoMorador.TipoMorador = "Permanentes";
+        Navigation.NavigateTo("/Cadastros/Pessoas/Lista");
+    }
+    private void Temporarios()
+    {
+        HtipoMorador.TipoMorador = "Temporários";
+        Navigation.NavigateTo("/Cadastros/Pessoas/Lista");
+    }
+  
+    private void Veiculos()
+    {
+        Navigation.NavigateTo("/Cadastros/Veiculos/Lista");
+    }
+      private void Animais()
+    {
+        Navigation.NavigateTo("/Cadastros/Animais/Lista");
+    }
+    private void Empresas()
+    {
+        Navigation.NavigateTo("/Cadastros/Empresas/Lista");
+    }
+      private void Imoveis()
+    {
+        Navigation.NavigateTo("/Cadastros/Imoveis/Lista");
+    }
+    private void ImoveisVertical()
+    {
+        Navigation.NavigateTo("/Cadastros/Imoveis/ListaImovelVertical");
+    }
+    private void Localidade()
+    {
+        Navigation.NavigateTo("/Cadastros/Localidades/Lista");
+    }
+    private void OcorrenciasInternas()
+    {
+        Navigation.NavigateTo("/Cadastros/OcorrenciasInternas/Lista");
+    }
+    private void Voltar()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

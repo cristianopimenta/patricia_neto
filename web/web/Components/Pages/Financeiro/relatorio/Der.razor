@@ -1,0 +1,74 @@
+﻿@page "/financeiro/relatorio/der"
+@inject DerService DerService
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudText Typo="Typo.h4" Class="mb-4">Demonstrativo de Resultados (DRE)</MudText>
+
+    <!-- Filtros de Período -->
+    <MudSelect T="Periodo" @bind-Value="periodoSelecionado" Label="Período" Class="mb-4">
+        @foreach (Periodo periodo in Enum.GetValues(typeof(Periodo)))
+        {
+            <MudSelectItem Value="periodo">@periodo.ToString()</MudSelectItem>
+        }
+    </MudSelect>
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CarregarDados" Class="mb-4">
+        Carregar Dados
+    </MudButton>
+
+    <!-- Gráficos -->
+    <MudText Typo="Typo.h5" Class="mb-4">Vencimentos Abertos vs Liquidados</MudText>
+    <MudChart T="int" ChartType="ChartType.Bar" Labels="@labels" Data="@dadosVencimentos" Class="mb-4" />
+
+    <MudText Typo="Typo.h5" Class="mb-4">Total Receber vs Total Pagar</MudText>
+    <MudChart T="decimal" ChartType="ChartType.Bar" Labels="@labels" Data="@dadosTotais" Class="mb-4" />
+</MudContainer>
+
+@code {
+    
+    private Periodo periodoSelecionado = Periodo.Mensal; // Definindo o valor inicial como "Mensal"
+    private List<string> labels = new();
+    private List<int> dadosVencimentos = new();
+    private List<decimal> dadosTotais = new();
+
+    private async Task CarregarDados()
+    {
+        labels.Clear();
+        dadosVencimentos.Clear();
+        dadosTotais.Clear();
+
+        List<DerResultado> resultados;
+
+        switch (periodoSelecionado)
+        {
+            case Periodo.Mensal: // Usando a string "Mensal"
+                resultados = await DerService.CalcularDerMensalAsync(DateTime.Now.Year);
+                labels = Enumerable.Range(1, 12).Select(m => new DateTime(DateTime.Now.Year, m, 1).ToString("MMM")).ToList();
+                break;
+            case Periodo.Semestral: // Usando a string "Semestral"
+                resultados = await DerService.CalcularDerSemestralAsync(DateTime.Now.Year);
+                labels = new List<string> { "1º Semestre", "2º Semestre" };
+                break;
+            case Periodo.Anual: // Usando a string "Anual"
+                resultados = new List<DerResultado> { await DerService.CalcularDerAnualAsync(DateTime.Now.Year) };
+                labels = new List<string> { "Anual" };
+                break;
+            default:
+                resultados = new List<DerResultado>();
+                break;
+        }
+
+        
+
+        foreach (var resultado in resultados)
+        {
+            dadosVencimentos.Add(resultado.VencimentosAbertosReceber + resultado.VencimentosAbertosPagar);
+            dadosVencimentos.Add(resultado.VencimentosLiquidadosReceber + resultado.VencimentosLiquidadosPagar);
+            dadosTotais.Add(resultado.TotalReceber);
+            dadosTotais.Add(resultado.TotalPagar);
+        }
+    }
+}

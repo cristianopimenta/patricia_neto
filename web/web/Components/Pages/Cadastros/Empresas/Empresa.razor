@@ -1,0 +1,400 @@
+@page "/Cadastros/Empresas/Empresa/"
+@page "/Cadastros/Empresas/Empresa/{Id:int}"
+@layout MainLayout
+
+@inject BuscarCEPService CepService
+@using Microsoft.AspNetCore.WebUtilities
+@using web.Components.Layout
+
+@inject MudBlazor.ISnackbar mensagem
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+
+@inject IEmpresa empresaService
+
+@inject HelperConfiguracoes HtipoMorador
+
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudGrid style="position: relative;  padding: 15px;">
+    <MudItem xs="12">
+        <MudPaper Class="d-flex align-items-center justify-content-between"
+                  Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+            <div class="d-flex align-items-center">
+                <MudIcon Icon="@Icons.Material.Filled.AddHome" Color="Color.Warning" Size="Size.Large"/>
+                <MudText Class="ml-2" Typo="Typo.h4" Color="@Color.Warning">Cadastro
+                    de Condomínio
+                </MudText>
+            </div>
+
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+<MudDivider/>
+<br/>
+
+<MudCard Elevation="8">
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" @ref="tabs">
+        <MudTabPanel Text="DADOS CONDOMÍNIO" Disabled="false">
+            <MudCardContent>
+                <MudSnackbarProvider/>
+                <MudForm @ref="form" Model="empresa" OnValidSubmit="SalvarDados" OnInvalidSubmit="MostrarErros">
+
+                    <MudGrid>
+
+                        <MudItem xs="6" md="6">
+
+                            <MudSelect @bind-Value="empresa.TipoCondominio" Label="Tipo Condominio"
+                                       Placeholder="Selecione tipo de condominio"
+                                       AdornmentIcon="@Icons.Material.Filled.Home" AdornmentColor="Color.Primary">
+                                <MudSelectItem Value="@("HORIZONTAL")">Horizontal</MudSelectItem>
+                                <MudSelectItem Value="@("VERTICAL")">Vertical</MudSelectItem>
+                                <MudSelectItem Value="@("ESTACIONAMENTO")">Estacionamento</MudSelectItem>
+                               
+                            </MudSelect>
+                        </MudItem>
+
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.NomeResponsavel" Label="Nome" Required="true"
+                                          Variant="Variant.Outlined" RequiredError="Campo obrigatório"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.Email" Label="Email" Required="true"
+                                          Variant="Variant.Outlined" RequiredError="Campo obrigatório"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.TelefonePrincipal"
+                                          Label="Telefone"
+                                          Mask="@(new PatternMask("(00) 00000-0000"))"
+                                          Required="true" Variant="Variant.Outlined"
+                                          RequiredError="Campo obrigatório"/>
+                        </MudItem>
+
+                        <MudItem xs="6" md="6">
+                            <MudTextField @bind-Value="empresa.CNPJ"
+                                          Label="CNPJ da empresa"
+                                          Required="true"
+                                          RequiredError="Campo obrigatório"
+                                          Disabled=_cpf Variant="Variant.Outlined"
+                            />
+                        </MudItem>
+
+                        <MudItem xs="12" md="6">
+
+                            <MudTextField @bind-Value="empresa.RazaoSocial" Label="Razão Social"
+                                          Variant="Variant.Outlined"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.NomeFantasia" Label="Nome Fantasia"
+                                          Variant="Variant.Outlined"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.DataAbertura" Format="yyyy-MM-dd"
+                                          Variant="Variant.Outlined" Label="Data Abertura" InputType="InputType.Date"
+                                          Required="true"
+                                          RequiredError="Campo obrigatório"/>
+
+                        </MudItem>
+
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.Email" Label="Email" Required="true"
+                                          Variant="Variant.Outlined" RequiredError="Campo obrigatório"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.CEP"
+                                          Label="CEP"
+                                          Required="true"
+                                          Variant="Variant.Outlined"
+                                          RequiredError="Campo obrigatório"
+                                          Mask="@(new PatternMask("00000-000"))"
+                                          Placeholder="Digite o CEP" />
+
+                            <MudButton OnClick="BuscarEndereco">Buscar Endereço</MudButton>
+
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.Endereco" Label="Endereço" Required="true"
+                                          Variant="Variant.Outlined"
+                                          RequiredError="Campo obrigatório"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.Numero" Label="Número" Variant="Variant.Outlined"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.Complemento" Label="Complemento"
+                                          Variant="Variant.Outlined"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.Bairro" Label="Bairro" Required="true"
+                                          Variant="Variant.Outlined"
+                                          RequiredError="Campo obrigatório"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.Cidade" Label="Cidade" Required="true"
+                                          RequiredError="Campo obrigatório"
+                                          Variant="Variant.Outlined"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.Estado" Label="Estado" Required="true"
+                                          Variant="Variant.Outlined"
+                                          RequiredError="Campo obrigatório"/>
+                        </MudItem>
+
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="empresa.Observacao" Label="Observação"
+                                          Variant="Variant.Outlined"/>
+                        </MudItem>
+
+
+                    </MudGrid>
+                    <MudSpacer/>
+                    <MudCardActions>
+                        <MudButton Color="Color.Success" Variant="Variant.Filled" Class="ml-12" OnClick="SalvarEmpresa">
+                            Salvar Registro
+                        </MudButton>
+                    </MudCardActions>
+                </MudForm>
+            </MudCardContent>
+        </MudTabPanel>
+
+
+        <MudSpacer/>
+        <MudCardActions>
+            <MudButton Color="Color.Info" Variant="Variant.Filled" Class="ml-12" OnClick="CloseModal">Voltar Lista de
+                registros
+            </MudButton>
+        </MudCardActions>
+    </MudTabs>
+</MudCard>
+
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+    [Parameter] public string? vTipoCadastro { get; set; }
+
+    MudTabs tabs;
+    MudTabPanel pnDadosBasicos01;
+
+    //buscar cep
+    private string Cep { get; set; }
+    private ViaCepResponse EnderecoCEP { get; set; }
+
+
+    private async Task BuscarEndereco()
+    {
+        EnderecoCEP = await CepService.GetEnderecoPorCepAsync(Cep);
+
+
+        if (EnderecoCEP != null)
+        {
+            empresa.Endereco = EnderecoCEP.Logradouro ?? string.Empty;
+            empresa.Bairro = EnderecoCEP.Bairro ?? string.Empty;
+            empresa.Cidade = EnderecoCEP.Localidade ?? string.Empty;
+            empresa.Estado = EnderecoCEP.Uf ?? string.Empty;
+
+            mensagem.Add("Endereço encontrado com sucesso!", Severity.Success);
+        }
+        else
+        {
+            mensagem.Add("Endereço não encontrado ou CEP inválido.", Severity.Error);
+        }
+        // Atualiza a UI
+        StateHasChanged();
+    }
+
+    private HashSet<string> options { get; set; } = new HashSet<string>();
+    private string[] Tipobusca = { "CNH", "RG", "Internacional", "Passaporte" };
+
+    private MudForm form;
+    private EmpresaModel empresa { get; set; } = new EmpresaModel(cnpj: "");
+    private int activeTabIndex = 0;
+    private String? _DocumentoUnico;
+
+
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+    private bool _cpf = false;
+    private bool _documentos, _contato, _veiculos, _enderecos, _foto = true;
+
+    private bool _isEdit;
+    private string nomeUsuario;
+
+
+    private string searchString = string.Empty; // Usaremos apenas uma string de busca
+
+
+    private EmpresaModel selectedItem1 = null;
+
+
+    private IEnumerable<EmpresaModel> liestaEmpresas = new List<EmpresaModel>();
+
+
+    private IDialogReference _dialogReference;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Obter o estado de autenticação do usuário e salvar usuario logado no registro
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        nomeUsuario = user.Identity.Name;
+
+        if (Id > 0)
+        {
+            empresa = await empresaService.ObterEmpresaPorId(Id) ?? new EmpresaModel();
+
+        }
+        _isEdit = Id > 0;
+
+
+        try
+        {
+            var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("id", out var idParam) && int.TryParse(idParam, out var id))
+            {
+                Console.WriteLine($"Id recebido via QueryString: {id}");
+                if (id > 0)
+                {
+                    empresa = await empresaService.GetRegistroById(id);
+                    await GetEmpresa();
+                    _cpf = true; // Desabilita a edição do CPF ao editar
+                    await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+                    _DocumentoUnico = empresa.CNPJ;
+
+
+                    if (empresa != null && !string.IsNullOrEmpty(empresa.CNPJ))
+                    {
+                        empresa = new EmpresaModel(cnpj: empresa.CNPJ);
+                    }
+                    else
+                    {
+                        empresa = new EmpresaModel(cnpj: ""); // Valor padrão ou tratamento de erro
+                    }
+                }
+                else
+                {
+                    mensagem.Add("Registro não encontrado.", Severity.Error);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+
+    }
+
+
+    void Activate(int index)
+    {
+        tabs.ActivatePanel(index);
+    }
+
+    private async Task SalvarEmpresa()
+    {
+        await form.Validate();
+        if (!form.IsValid)
+        {
+            mensagem.Add("Por favor, preencha todos os campos obrigatórios.", Severity.Error);
+            return;
+        }
+
+        if (empresa.Id > 0)
+        {
+            // Atualiza o registro
+
+            empresa.UsuarioId = nomeUsuario;
+            await empresaService.SalvarRegistro(empresa);
+            await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+            mensagem.Add("Condomínio atualizado com sucesso.", Severity.Success);
+            Navigation.NavigateTo("/Cadastros/Empresas/Lista");
+        }
+        else
+        {
+            
+            empresa.UsuarioId = nomeUsuario;
+            _DocumentoUnico = empresa.CNPJ;
+            empresa.UsuarioId = ""; //informar usuario assim q entrar em login
+            await empresaService.SalvarRegistro(empresa);
+            await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+            mensagem.Add("Condomínio cadastrado com sucesso!", Severity.Success);
+            Console.WriteLine("Dados salvos com sucesso!");
+            Navigation.NavigateTo("/Cadastros/Empresas/Lista");
+        }
+    }
+
+    private async Task CancelarEdicao()
+    {
+        // Exibe mensagem de confirmação
+        var confirm = await JSRuntime.InvokeAsync<bool>("confirm", "Deseja realmente cancelar a edição?");
+        if (confirm)
+        {
+            // Desativa proteção de navegação
+            await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+            // Navega para outra página ou reseta o formulário
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        // Limpar o evento onbeforeunload ao sair do componente
+        await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+    }
+
+
+    private async Task CloseModal()
+    {
+        try
+        {
+            Console.WriteLine("Fechando o formulário...");
+            // Exibe mensagem de confirmação
+            var confirm = await JSRuntime.InvokeAsync<bool>("confirm", "Deseja realmente cancelar a edição?");
+            if (confirm)
+            {
+                // Desativa proteção de navegação
+                await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+                // Navega para outra página ou reseta o formulário
+                Navigation.NavigateTo("/Cadastros/Empresas/Lista");
+                DisposeAsync();
+            }
+
+            // Aqui você pode implementar a lógica para fechar ou resetar o formulário
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao fechar o formulário: {ex.Message}");
+        }
+    }
+
+
+    private async Task<IEnumerable<EmpresaModel>> GetEmpresa()
+    {
+        if (string.IsNullOrEmpty(empresa.CNPJ))
+        {
+            mensagem.Add("Documento único não fornecido.", Severity.Error);
+            return Enumerable.Empty<EmpresaModel>();
+        }
+        else
+        {
+            _DocumentoUnico = empresa.CNPJ;
+            liestaEmpresas = await empresaService.GetCNPJ(_DocumentoUnico);
+            return liestaEmpresas;
+        }
+    }
+
+    private void Pesquisar()
+    {
+        // Função que pode ser usada para alguma lógica adicional de pesquisa
+        StateHasChanged();
+    }
+
+}
+

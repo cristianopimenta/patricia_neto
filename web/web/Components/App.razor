@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/fontawesome/css/font-awesome.min.css">
+    
+
+
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/imagem/logoOTMZ.png" />
+    <HeadOutlet @rendermode="InteractiveServer" />
+
+    <style>
+        .custom-button {
+            background-color: lightgray; /* Cor cinza do botão */
+            width: 250px; /* Largura */
+            height: 100px; /* Altura */
+            font-weight: 300;
+            color: black;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease; /* Animação suave para mudança de cor */
+        }
+
+        .custom-button:hover {
+                background-color: darkorange; /* Cor laranja ao passar o mouse */
+        }
+
+
+        .custom-button-in {
+            background-color: lightgray; /* Cor cinza do botão */
+            width: 250px; /* Largura */
+            height: 100px; /* Altura */
+            font-weight: 300;
+            color: black;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease; /* Animação suave para mudança de cor */
+        }
+
+        .custom-button-in:hover {
+            background-color: darkorange; /* Cor laranja ao passar o mouse */
+        }
+        
+        
+        
+
+        .button-container {
+            display: flex;
+            justify-content: center; /* Centraliza o grupo de botões horizontalmente */
+            align-items: center; /* Centraliza verticalmente se necessário */
+            gap: 10px; /* Espaço entre os botões */
+            margin-top: 20px; /* Margem superior para ajuste de layout */
+        }
+
+        .titulo-text {
+            font-size: 40px; /* Altere o tamanho da fonte conforme necessário */
+            font-weight: 300; 
+        }
+
+        .titulo-text-color {
+            color: orangered; /* Altere o tamanho da fonte conforme necessário */
+            
+        }
+
+        .custom-tab-line-color  {
+            border-bottom: 2px solid orange; /* Define a cor da linha para laranja */
+        }
+
+        .mud-tabs-toolbar {
+            border-bottom: 2px solid orange; /* Define a cor da linha para laranja */
+        }
+
+            .mud-tabs-toolbar .mud-tab-active {
+                border-bottom: 2px solid orange !important; /* Força a aplicação da linha laranja */
+            }
+    </style>
+    
+    <script>
+        window.preventNavigation = function (shouldPrevent) {
+            if (shouldPrevent) {
+                window.onbeforeunload = function () {
+                    return "Você tem alterações não salvas. Deseja sair?";
+                };
+            } else {
+                window.onbeforeunload = null;
+            }
+        };
+    </script>
+
+    <script>
+        window.onbeforeunload = function () {
+            location.href = "/";
+        };
+    </script>
+
+</head>
+
+<body>
+<Routes @rendermode="InteractiveServer" />
+<script src="_framework/blazor.web.js"></script>
+<script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    
+</body>
+
+</html>
+
+

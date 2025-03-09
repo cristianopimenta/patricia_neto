@@ -1,0 +1,335 @@
+﻿@page "/Cadastros/Imoveis/RegistroImovel"
+@page "/Cadastros/Imoveis/RegistroImovel/{Id:int}"
+@using Microsoft.EntityFrameworkCore.Metadata
+
+@inject IImoveis iimovel
+@inject IEmpresa empresaService
+
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudCard Elevation="8">
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" @ref="tabs">
+        <MudTabPanel Text="Condominio Horizontal" Disabled="false">
+            <MudCardContent>
+                <MudSnackbarProvider />
+                <MudCard Outlined="true">
+                    <MudCardContent>
+                        <MudText>Logradouro</MudText>
+                        <MudDivide/>
+                        <MudGrid>
+                            <MudItem xs="12" md="12">
+                                <MudSelect T="int?" @bind-Value="imovel.IdEmpresa" Label="Selecione o condominio"
+                                           Variant="Variant.Outlined" Required="true">
+                                    @if (empresas != null && empresas.Any())
+                                    {
+                                        @foreach (var empresa in empresas)
+                                        {
+                                            <MudSelectItem T="int?" Value="@(empresa.Id)">
+                                                @empresa.RazaoSocial
+                                            </MudSelectItem>
+                                        }
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                           
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Quadra" Label="Quadra" HelperText="Digite a quadra" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Lote" Label="Lote" HelperText="Digite o lote" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Lograouro" Label="Logradouro" HelperText="Endereço do imóvel" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Numero" Label="Número" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Complemento" Label="Complemento" />
+                            </MudItem>                           
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Cep" Label="CEP"
+                                              Mask="@(new PatternMask("00000-000"))" />
+                            </MudItem>
+                             <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Bairro" Label="Bairro" />
+                            </MudItem>  
+                             <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Cidade" Label="Cidade" />
+                            </MudItem> 
+                             <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Estado" Label="Estado" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+            </MudCardContent>
+
+            <MudCardContent>
+                <MudText>Construção</MudText>
+                <MudGrid>
+                    <MudItem xs="4">
+                        <MudSelect @bind-Value="imovel.StatusImovel" Label="Status do Imóvel" Required="true">
+                            <MudSelectItem Value="@StatusImovel.Liberado">@StatusImovel.Liberado</MudSelectItem>
+                            <MudSelectItem Value="@StatusImovel.Bloqueado">@StatusImovel.Bloqueado</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.AreaImovel" Label="Área do Imóvel (m²)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.AreaConstruida" Label="Área Construída (m²)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.AreaJardinada" Label="Área Jardinada (m²)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.BaseCalculo" Label="Base de Cálculo" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudCheckBox T="bool" @bind-Checked="imovel.ImovelFicticio" Label="Imóvel Fictício" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.AreaTotalOriginal" Label="Área Total Original (m²)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.AreaConstruidaOriginal" Label="Área Construída Original (m²)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.AreaPermeavel" Label="Área Permeável (m²)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudCheckBox T="bool?" @bind-Checked="imovel.PossuiPiscina" Label="Possui Piscina" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudCheckBox T="bool?" @bind-Checked="imovel.PossuiEdicula" Label="Possui Edícula" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.AreaEdicula" Label="Área da Edícula (m²)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.AreaAproveitamento" Label="Área de Aproveitamento (m²)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.Frente" Label="Frente (m)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.FrenteM" Label="Frente (M)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.Fundo" Label="Fundo (m)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.FundoM" Label="Fundo (M)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.Direita" Label="Direita (m)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.DireitaM" Label="Direita (M)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.Esquerda" Label="Esquerda (m)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.EsquerdaM" Label="Esquerda (M)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudNumericField @bind-Value="imovel.Chanfro" Label="Chanfro" />
+                    </MudItem>
+                </MudGrid>
+
+
+            </MudCardContent>
+
+            <MudCardContent>
+                <MudCard Outlined="true">
+                    <MudCardContent>
+                        <MudText>Prefeitura</MudText>
+                        <MudGrid>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.HabitesePrefeitura" Format="yyyy-mm-dd"
+                                              Label="Habite-se Prefeitura" />
+
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Vistoria" Format="yyyy-mm-dd"
+                                              Label="Vistoria" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.EntradaRememb" Format="yyyy-mm-dd"
+                                              Label="Entrada Remembramento" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.AprovacaoCondominio" Format="yyyy-mm-dd"
+                                              Label="Aprovação do Condomínio" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.AprovacaoPrefeitura" Format="yyyy-mm-dd"
+                                              Label="Aprovação da Prefeitura" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.EnvioCopiaAusa" Format="yyyy-mm-dd"
+                                              Label="Envio de Cópia para AUS" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.RetornoAusa" Format="yyyy-mm-dd"
+                                              Label="Retorno da AUS" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudDatePicker @bind-Date="imovel.DataCadastro" Format="yyyy-mm-dd"
+                                               Label="Data de Cadastro" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudNumericField @bind-Value="imovel.IndiceOcupacao" Label="Índice de Ocupação" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+            </MudCardContent>
+
+            <MudCardContent>
+                <MudCard Outlined="true">
+                    <MudCardContent>
+                        <MudText>Geo Localização</MudText>
+                        <MudGrid>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Latitude" Label="Latitude" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudTextField @bind-Value="imovel.Longitude" Label="Longitude" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+            </MudCardContent>
+
+            <MudCardContent>
+                <MudCard Outlined="true">
+                    <MudCardContent>
+                        <MudText>Assembleia</MudText>
+                        <MudGrid>
+                            <MudItem xs="4">
+                                <MudNumericField @bind-Value="imovel.PesoVoto" Label="Peso do Voto" />
+                            </MudItem>
+                            <MudItem xs="4">
+                                <MudCheckBox T="bool?" @bind-Checked="imovel.PossuiTitulo" Label="Possui Título" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+            </MudCardContent>
+
+        </MudTabPanel>
+      </MudTabs> 
+    <MudGrid Spacing="4">
+        <MudCardContent>
+            <MudSnackbarProvider />
+            <MudCard Outlined="true">
+                <MudForm @ref="form" Valid="isFormValid">
+
+                    <!-- Botões de ação -->
+                    <MudItem xs="6" Class="mt-4">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Salvar">Salvar</MudButton>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="Cancelar" Class="ml-2">Cancelar</MudButton>
+                    </MudItem>
+
+                    <MudText Color="Color.Error" Style="margin-top: 16px;" Hidden="@isFormValid">
+                        Por favor, preencha os campos obrigatórios corretamente.
+                    </MudText>
+                </MudForm>
+            </MudCard>
+        </MudCardContent>
+    </MudGrid>
+</MudCard>
+
+@code {
+    private MudForm form;
+    private ImovelModel imovel = new();
+    private bool isFormValid;
+
+
+
+
+    private List<EmpresaModel> empresas = new();
+    private EmpresaModel? empresaSelecionado;
+
+    private ImovelModel _imovelModel = new ImovelModel();
+    private string nomeUsuario;
+    private bool _isEdit;
+    MudTabs tabs;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private async Task Salvar()
+    {
+        await form.Validate();
+        imovel.usuarioId = nomeUsuario;
+
+
+        if (_isEdit)
+        {
+            imovel.usuarioId = nomeUsuario;
+            imovel.Tipo = "HORIZONTAL";
+            await iimovel.SalvarRegistroEdicao(imovel); // Atualiza a conta existente
+            Snackbar.Add("Imovel atualizado com sucesso!", Severity.Success);
+        }
+        else
+        {
+            imovel.Tipo = "HORIZONTAL";
+            imovel.usuarioId = nomeUsuario;
+            await iimovel.SalvarRegistro(imovel); // Adiciona uma nova conta
+            Snackbar.Add("Imovel cadastrado com sucesso!", Severity.Success);
+        }
+
+       
+        Navigation.NavigateTo("/Cadastros/Imoveis/Lista");
+    }
+
+
+
+    private void Cancelar()
+    {
+        Navigation.NavigateTo("/Cadastros/Imoveis/Lista"); // Redirecionar ao cancelar
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        empresas = await empresaService.ObterEmpresas();
+
+        if (user.Identity.IsAuthenticated)
+        {
+            nomeUsuario = user.Identity.Name;
+
+        }
+
+        if (Id > 0)
+        {
+            imovel = await iimovel.GetRegistroById(Id);
+           // empresa = await empresaService.ObterEmpresaPorId(Id) ?? new EmpresaModel();
+
+        }
+        _isEdit = Id > 0;
+
+      
+    }
+    private string GetEnumDescription(TipoPlano value)
+    {
+        var field = value.GetType().GetField(value.ToString());
+        var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
+        return attribute == null ? value.ToString() : attribute.Description;
+    }
+}
+
+
+
+
+

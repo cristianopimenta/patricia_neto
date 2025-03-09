@@ -1,0 +1,136 @@
+﻿@page "/financeiro/contasreceber/lista"
+@using web.Controller.Interface
+@inject IContaReceber contareceberService
+@inject MudBlazor.ISnackbar snackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudText Typo="Typo.h4" GutterBottom="true">Contas a Receber</MudText>
+
+<MudPaper Elevation="3" Class="pa-4">
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudDatePicker @bind-Date="_filterDataVencimento" Label="Data de Vencimento" />
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4">
+            <MudSelect @bind-Value="_filterStatus" Label="Status" T="TipoLiquidacao?">
+                <MudSelectItem Value="@(null)" T="TipoLiquidacao?">Todos</MudSelectItem>
+                @foreach (TipoLiquidacao status in Enum.GetValues(typeof(TipoLiquidacao)))
+                {
+                    <MudSelectItem Value="status" T="TipoLiquidacao?">@status.ToString()</MudSelectItem>
+                }
+            </MudSelect>
+
+
+        </MudItem>
+        <MudItem xs="12">
+            <MudButton OnClick="FilterContas" Color="Color.Primary" Variant="Variant.Filled">Filtrar</MudButton>
+            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="NovoRegistro">
+                Novo Registro
+            </MudButton>
+            <MudButton Color="Color.Error" Variant="Variant.Filled" Class="ml-12"
+                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="Voltar">
+
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+<MudTable Items="@_contasReceber" Hover="true" Striped="true" Elevation="3" Class="mt-4">
+    <HeaderContent>
+        <MudTh>Número Documento</MudTh>
+        <MudTh>Data Vencimento</MudTh>
+        <MudTh>Data Recebimento</MudTh>
+        <MudTh>Valor</MudTh>
+        <MudTh>Status</MudTh>
+        <MudTh>Ações</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Número Documento">@context.NumeroDocumento?</MudTd>
+        <MudTd DataLabel="Data Vencimento">@context.DataVencimento?.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Data Recebimento">@context.DataRecebimento?.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Valor">@context.ValorRecebimento.ToString("C")</MudTd>
+        <MudTd DataLabel="Status">@context.StatusConta</MudTd>
+        <MudTd DataLabel="Ações">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => EditConta(context)" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => DeleteConta(context)" />
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+<MudDialog @bind-IsVisible="_isEditDialogVisible">
+    <DialogContent>
+        <MudButton ContaPagar="_selectedConta" OnSave="SaveConta" OnCancel="CancelEdit" />
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private List<ContaReceberModel> _contasReceber = new();
+    private DateTime? _filterDataVencimento;
+    private DateTime? _filterDataPagamento;
+    private TipoLiquidacao? _filterStatus;
+    private bool _isEditDialogVisible;
+    private ContaReceberModel _selectedConta = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadContas();
+    }
+
+    private async Task LoadContas()
+    {
+        _contasReceber = await contareceberService.GetContasReceberAsync(_filterDataVencimento, _filterDataPagamento, _filterStatus);
+    }
+
+    private async Task FilterContas()
+    {
+        await LoadContas();
+    }
+
+    private void EditConta(ContaReceberModel conta)
+    {
+        _selectedConta = conta;
+        // _isEditDialogVisible = true;
+        Navigation.NavigateTo($"/financeiro/contasreceber/editarcontareceber/{conta.Id}");
+    }
+
+    private async Task SaveConta(ContaReceberModel conta)
+    {
+        if (conta.Id == 0)
+        {
+            await contareceberService.AddContaReceberAsync(conta);
+        }
+        else
+        {
+            await contareceberService.UpdateContaReceberAsync(conta);
+        }
+        _isEditDialogVisible = false;
+        await LoadContas();
+    }
+
+    private void CancelEdit()
+    {
+        _isEditDialogVisible = false;
+    }
+
+    private async Task DeleteConta(ContaReceberModel conta)
+    {
+        await contareceberService.DeleteContaReceberAsync(conta.Id);
+        await LoadContas();
+    }
+
+    private async Task NovoRegistro()
+    {
+        Navigation.NavigateTo("financeiro/contasreceber/EditarContaReceber");
+    }
+    private async Task Voltar()
+    {
+        Navigation.NavigateTo("/financeiro/financeiro");
+    }
+}

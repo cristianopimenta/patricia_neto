@@ -1,0 +1,42 @@
+﻿@page "/Sistemas/Sistemas"
+@using web.Components.Layout
+@layout MainLayout
+@using static MudBlazor.Icons.Material
+
+@rendermode InteractiveServer
+@inject MudBlazor.ISnackbar snackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+
+<PageTitle>OTMZ</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+
+        <MudText Align="Align.Center" Class="titulo-text">Qual módulo você quer acessar?</MudText>
+
+
+        <div class="button-container">
+
+            <MudButton Class="custom-button">USUÁRIOS</MudButton>
+            <MudButton Class="custom-button">CATEGORIA DE USUÁRIOS</MudButton>
+            <MudButton Class="custom-button">EQUIPAMENTOS</MudButton>
+            <MudButton Class="custom-button" OnClick="() => Condominio()">CONDOMINIO</MudButton>
+            <MudButton Class="custom-button" >POLÍTICA DE PRIVACIDADE (LGPD)</MudButton>
+      
+        </div>
+
+        <div class="button-container">
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <h2>Usuário não autorizado...</h2>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private void Condominio()
+    {
+        Navigation.NavigateTo("/Sistemas/Condominio");
+    }
+}

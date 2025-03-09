@@ -1,0 +1,169 @@
+﻿@page "/Cadastros/OcorrenciasInternas/Lista"
+@using web.Components.Layout
+@layout MainLayout
+@inject MudBlazor.ISnackbar snackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+@inject IOcorrenciaInterna ocorrenciasInternas
+
+<PageTitle>OTMZ</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+            <MudGrid style="position: relative;  padding: 50px;">
+                <MudItem xs="12">
+                    <MudPaper Class="d-flex align-items-center justify-content-between"
+                              Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+                        <div class="d-flex align-items-center">
+                            <MudIcon Icon="@Icons.Material.Filled.AccessAlarm" Color="Color.Warning" Size="Size.Large" />
+                            <MudText Class="ml-2" Typo="Typo.h4" Color="@Color.Warning">Lista de Ocorrencias Internas</MudText>
+                        </div>
+                    </MudPaper>
+                </MudItem>
+
+            </MudGrid>
+
+            <MudDivider/>
+        <MudTabs Elevation="1" Rounded="true" Style="background-color: transparent;padding: 30px;">
+            <MudTabPanel Text="Ocorrências" ToolTip="Ocorrências internas">
+
+                <MudGrid Spacing="2">
+                    <MudItem xs="12" md="12">
+                        <MudPaper Class="d-flex align-items-center" Style="padding: 8px;">
+                            <MudSelect T="string" Label="Tipo de Consulta" HelperText="Escolha o tipo de ocorrência" MultiSelection="true"
+                                       SelectedValues="@options">
+                                @foreach (var tipo in Tipobusca)
+                                {
+                                    <MudSelectItem T="string" Value="@tipo">@tipo</MudSelectItem>
+                                }
+                            </MudSelect>
+
+                            <MudTextField T="string" Placeholder="Nome do pet, tipo ou descrição" Label="Buscar" Typo="Typo.input"
+                                          Style="margin-left: 16px; margin-right: 16px;" @bind-Value="searchString"></MudTextField>
+
+                            <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                                       StartIcon="@Icons.Material.Filled.Search" @onclick="Pesquisar"
+                                       Style="border-radius: 0%; width: 150px; height: 35px;">
+                                Consultar
+                            </MudButton>
+                            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="NovoRegistro">
+                                Novo Registro
+                            </MudButton>
+                            <MudButton Color="Color.Error" Variant="Variant.Filled" Class="ml-12"
+                                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="Voltar">
+
+                            </MudButton>
+                        </MudPaper>
+                    </MudItem>
+                </MudGrid>
+
+                <MudTable Items="listaocorrenciasinternas" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="Search" @bind-SelectedItem="selectedItem1">
+                    <!-- <ToolBarContent>
+                        <MudText Typo="Typo.h6">Lista de Animais</MudText>
+                        <MudSpacer />
+                       <MudTextField @bind-Value="searchString" Placeholder="Procurar pets..." Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                        </ToolBarContent>-->
+
+                    <HeaderContent>
+                        <MudTh>Código</MudTh>
+                        <MudTh>Status</MudTh>
+                        <MudTh>Concluir em</MudTh>
+                        <MudTh>Atribuido a</MudTh>
+                        <MudTh>Unidade</MudTh>
+                        <MudTh>Criado por</MudTh>
+                        <MudTh>Criado em</MudTh>
+                    </HeaderContent>
+
+                    <RowTemplate Context="context_ocorrencia">
+                        <MudTd DataLabel="Código">@context_ocorrencia.Id</MudTd>
+                        <MudTd DataLabel="Status">@context_ocorrencia.status</MudTd>
+                        <MudTd DataLabel="Concluir em">@context_ocorrencia.concluirDia</MudTd>
+                        <MudTd DataLabel="Atribuido a">@context_ocorrencia.IdPessoa</MudTd>
+                        <MudTd DataLabel="Unidade">@context_ocorrencia.IdImovel</MudTd>
+                        <MudTd DataLabel="Criado por">@context_ocorrencia.IdUsuario</MudTd>
+                        <MudTd DataLabel="Criado em">@context_ocorrencia.dataCadastro</MudTd>
+                    </RowTemplate>
+
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+            </MudTabPanel>
+
+            <!--<MudTabPanel Text="Foto" ToolTip="Registre a foto do seu pet">
+                <br /> Fotos dos meus pets
+            </MudTabPanel>-->
+
+        </MudTabs>
+
+    </Authorized>
+
+    <NotAuthorized>
+        <MudText>Você não está autorizado a visualizar esta página.</MudText>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private HashSet<string> options { get; set; } = new HashSet<string>();
+    private string[] Tipobusca = { "Aberto", "Fechado" };
+
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+
+    private string searchString = string.Empty; // Usaremos apenas uma string de busca
+
+    private OcorrenciaInternaModel selectedItem1 = null;
+    private IEnumerable<OcorrenciaInternaModel> listaocorrenciasinternas = new List<OcorrenciaInternaModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await GetPet();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    private async Task<IEnumerable<OcorrenciaInternaModel>> GetPet()
+    {
+        listaocorrenciasinternas = await ocorrenciasInternas.GetRegistro();
+        return listaocorrenciasinternas;
+    }
+
+    private bool Search(OcorrenciaInternaModel ocorrencia)
+    {
+        if (string.IsNullOrWhiteSpace(searchString) && options.Count == 0)
+            return true; // Se não houver uma string de busca ou opções selecionadas, mostre todos os itens
+
+        // Verifique se o nome do pet ou tipo do animal contém a string de busca
+        bool matchesSearchString = ocorrencia.descricao?.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false;
+
+        // Verifique se o tipo do animal está entre as opções selecionadas
+        bool matchesOptions = options.Count == 0 || options.Contains(ocorrencia.status);
+
+        return matchesSearchString && matchesOptions;
+    }
+
+    private void Pesquisar()
+    {
+        // Função que pode ser usada para alguma lógica adicional de pesquisa
+        StateHasChanged();
+    }
+    private async Task NovoRegistro()
+    {
+        Navigation.NavigateTo("/");
+    }
+    private async Task Voltar()
+    {
+        Navigation.NavigateTo("/cadastros/cadastros/");
+    }
+}
+

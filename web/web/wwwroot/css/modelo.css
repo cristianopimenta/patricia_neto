@@ -1,0 +1,49 @@
+﻿
+.custom-button {
+    background-color: lightgray;
+    width: 120px;
+    height: 120px;
+    font-weight: 300;
+    color: black;
+    font-size: 14px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+    .custom-button:hover {
+        background-color: darkorange;
+    }
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.titulo-text {
+    font-size: 40px;
+    font-weight: 300;
+}
+
+.titulo-text-color {
+    color: orangered;
+}
+
+.custom-tab-line-color {
+    border-bottom: 2px solid orange;
+}
+
+.mud-tabs-toolbar {
+    border-bottom: 2px solid orange;
+}
+
+    .mud-tabs-toolbar .mud-tab-active {
+        border-bottom: 2px solid orange !important;
+    }
+.tab-panel {
+    background-color: transparent;
+    padding: 30px;
+}
+

@@ -1,0 +1,110 @@
+﻿@page "/login/create"
+@page "/login/create/{Id:int}"
+@using Controller.Services.Autenticacao
+
+@inject NavigationManager Navigation
+@inject UsuarioService usuarioservice
+@attribute [Authorize]
+
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5">
+            <MudText Typo="Typo.h4" Class="mb-4">@TituloPagina</MudText>
+
+            <EditForm Model="usuario" OnValidSubmit="SalvarUsuario">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <MudTextField @bind-Value="usuario.Nome" Label="Nome" Required="true" MaxLength="100" Class="mb-3" />
+                <MudTextField @bind-Value="usuario.Email"
+                              Label="Email"
+                              Required="true"
+                              Class="mb-3" />
+                <MudTextField @bind-Value="usuario.Senha" Label="Senha" Required="true" InputType="InputType.Password" MaxLength="100" Class="mb-3" />
+
+                <MudTextField @bind-Value="usuario.ConfirmarSenha"
+                              Label="Confirmar Senha"
+                              Required="true"
+                              InputType="InputType.Password"
+                              Class="mb-3" />
+
+                <MudSelect T="string" @bind-Value="usuario.Perfil" Label="Perfil" Required="true" Class="mb-3">
+                    <MudSelectItem Value="@("Admin")">Administrador</MudSelectItem>
+                    <MudSelectItem Value="@("SuperADM")">Super Administrador</MudSelectItem>
+                    <MudSelectItem Value="@("Usuario")">Usuário</MudSelectItem>
+                </MudSelect>
+
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SalvarUsuario" Class="mt-3">
+                    Salvar
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancelar" Class="mt-3 ml-2">
+                    Cancelar
+                </MudButton>
+            </EditForm>
+        </MudContainer>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; } // Parâmetro de rota para o ID do usuário
+
+    private UsuarioModel usuario = new UsuarioModel();
+    private string TituloPagina => Id == 0 ? "Cadastro de Usuário" : "Edição de Usuário";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id > 0)
+        {
+            // Carrega os dados do usuário se for uma edição
+            usuario = await usuarioservice.GetUsuarioByIdAsync(Id) ?? new UsuarioModel();
+        }
+    }
+
+    private async Task SalvarUsuario()
+    {
+        try
+        {
+            if (Id == 0)
+            {
+                // Cria um novo usuário
+                await usuarioservice.CreateUsuarioAsync(usuario);
+            }
+            else
+            {
+                // Atualiza o usuário existente
+                await usuarioservice.UpdateUsuarioAsync(usuario);
+            }
+            Navigation.NavigateTo("/login/loginacesso");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao salvar usuário: {ex.Message}");
+        }
+    }
+
+    private void Cancelar()
+    {
+        Navigation.NavigateTo("/login/listausuarios");
+    }
+
+    private string? ValidarEmail(string? email)
+    {
+        if (string.IsNullOrEmpty(email))
+            return "O email é obrigatório.";
+
+        var emailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        if (!System.Text.RegularExpressions.Regex.IsMatch(email, emailRegex))
+            return "O email não está em um formato válido.";
+
+        return null; // Validação bem-sucedida
+    }
+
+    private string? ValidarConfirmarSenha(string? confirmarSenha)
+    {
+        if (string.IsNullOrEmpty(confirmarSenha))
+            return "A confirmação de senha é obrigatória.";
+
+        if (usuario.Senha != confirmarSenha)
+            return "As senhas não coincidem.";
+
+        return null; // Validação bem-sucedida
+    }
+}

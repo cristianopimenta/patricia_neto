@@ -1,0 +1,228 @@
+﻿@page "/Cadastros/Imoveis/Lista"
+@using Microsoft.EntityFrameworkCore.Metadata
+@using web.Components.Layout
+@layout MainLayout
+
+@inject IImoveis imovelService
+@inject MudBlazor.ISnackbar snackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+
+<PageTitle>OTMZ</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+
+
+        <MudGrid style="position: relative;  padding: 50px;">
+            <MudItem xs="12">
+                <MudPaper Class="d-flex align-items-center justify-content-between"
+                Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+                    <div class="d-flex align-items-center">
+                        <MudIcon Icon="@Icons.Material.Filled.House" Color="Color.Warning" Size="Size.Large"/>
+                        <MudText Class="ml-2" Typo="Typo.h4" Color="@Color.Warning">Lista de Imóveis Horizontal</MudText>
+                    </div>
+
+                </MudPaper>
+            </MudItem>
+
+        </MudGrid>
+
+
+        <MudTabs Elevation="1" Rounded="true" Style="background-color: transparent;padding: 30px;">
+            <MudTabPanel Text="Imoveis" ToolTip="Cadastro de Imoveis">              
+
+                <MudGrid Spacing="2">
+                    <MudItem xs="12" md="12">
+                        <MudPaper Class="d-flex align-items-center" Style="padding: 8px;">
+
+
+                            <MudTextField T="string" Placeholder="Informe a Quadra ou Lote ou Logradouro" Label="Buscar" Typo="Typo.input"
+                            Style="margin-left: 16px; margin-right: 16px;" @bind-Value="searchString"></MudTextField>
+
+                            <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                            StartIcon="@Icons.Material.Filled.Search" @onclick="Pesquisar"
+                            Style="border-radius: 0%; width: 150px; height: 35px;">
+                                Consultar
+                            </MudButton>
+                            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                            Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="NovoRegistro">
+                                Novo Registro
+                            </MudButton>
+                            <MudButton Color="Color.Error" Variant="Variant.Filled" Class="ml-12"
+                            StartIcon="@Icons.Material.Filled.ArrowBack"
+                            Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="Voltar">
+
+                            </MudButton>
+                        </MudPaper>
+                    </MudItem>
+                </MudGrid>
+
+                <MudTable Items="listaimoveis" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped"
+                Filter="Search" @bind-SelectedItem="selectedItem1">            
+
+                    <HeaderContent>
+                        <MudTh>Código</MudTh>
+                        <MudTh>Logradouro</MudTh>
+                        <MudTh>Quadra</MudTh>
+                        <MudTh>Lote</MudTh>
+                        <MudTh>Área</MudTh>                   
+                        <MudTh>Data de Cadastro</MudTh>
+                        <MudTh>Ações</MudTh>
+                    </HeaderContent>
+
+                    <RowTemplate Context="imoveis">
+                        <MudTd DataLabel="Código">@imoveis.Id</MudTd>
+                        <MudTd DataLabel="Logradouro">@imoveis.Lograouro</MudTd>
+                        <MudTd DataLabel="Quadra">@imoveis.Quadra</MudTd>
+                        <MudTd DataLabel="Lote">@imoveis.Lote</MudTd>
+                        <MudTd DataLabel="Área">@imoveis.AreaTotalOriginal</MudTd>
+                        <MudTd DataLabel="Data de Cadastro">@imoveis.DataCadastro</MudTd>
+
+                        <MudTd DataLabel="Ações">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => EditarImovel(imoveis)" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => ExcluirImovel(imoveis.Id)" />
+                        </MudTd>
+                    </RowTemplate>
+
+                    <PagerContent>
+                        <MudTablePager/>
+                    </PagerContent>
+                </MudTable>
+            </MudTabPanel>
+
+            <MudTabPanel Text="Foto Imóvel" ToolTip="Registre a foto do imovel">
+                <br/> Fotos do imovel
+            </MudTabPanel>
+
+        </MudTabs>
+
+    </Authorized>
+
+    <NotAuthorized>
+        <MudText>Você não está autorizado a visualizar esta página.</MudText>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+
+
+
+
+
+
+    private HashSet<string> options { get; set; } = new HashSet<string>();
+    private string[] Tipobusca = { "Quadra", "Lote", "Logradouro" };
+    private MudForm _form;
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+    private string quadra = string.Empty;
+    private string lote = string.Empty;
+
+    private string searchString = string.Empty; // Usaremos apenas uma string de busca
+
+    private ImovelModel selectedItem1 = null;
+    private IEnumerable<ImovelModel> listaimoveis = new List<ImovelModel>();
+    private ImovelModel imoveis = new ImovelModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await GetImoveis();
+
+            Pesquisar();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    private async Task<IEnumerable<ImovelModel>> GetImoveis()
+    {
+        listaimoveis = await imovelService.GetRegistro();
+        return listaimoveis.Where(i => i.Tipo == "HORIZONTAL"); ;
+    }
+
+    private bool Search(ImovelModel imovel)
+    {
+        // Se todos os filtros estiverem vazios, mostre todos os imóveis
+        if (string.IsNullOrWhiteSpace(searchString) && string.IsNullOrWhiteSpace(quadra) && string.IsNullOrWhiteSpace(lote) && options.Count == 0)
+            return true;
+
+
+
+
+
+
+
+        // Verifica se a string de busca está no nome do imóvel ou logradouro
+
+
+
+        bool matchesSearchString = string.IsNullOrWhiteSpace(searchString) ||
+
+
+
+                                   (imovel.Lograouro?.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false) ||
+
+
+
+                                   (imovel.Quadra?.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false) ||
+
+
+
+                                   (imovel.Lote?.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false);
+
+        // Verifica se a quadra corresponde
+        bool matchesQuadra = string.IsNullOrWhiteSpace(quadra) ||
+                             (imovel.Quadra?.Equals(quadra, StringComparison.OrdinalIgnoreCase) ?? false);
+
+        // Verifica se o lote corresponde
+        bool matchesLote = string.IsNullOrWhiteSpace(lote) ||
+                           (imovel.Lote?.Equals(lote, StringComparison.OrdinalIgnoreCase) ?? false);
+
+        // Verifica se as opções selecionadas contêm o tipo do imóvel
+        bool matchesOptions = options.Count == 0 ||
+                              options.Contains(imovel.Tipo.ToString());
+
+        // Retorna verdadeiro se todas as condições forem atendidas
+        return matchesSearchString && matchesQuadra && matchesLote && matchesOptions;
+    }
+
+    private void Pesquisar()
+    {
+        // Função que pode ser usada para alguma lógica adicional de pesquisa
+        StateHasChanged();
+    }
+
+
+    private async Task NovoRegistro()
+    {
+        Navigation.NavigateTo("/Cadastros/Imoveis/RegistroImovel");
+    }
+
+
+    private async Task Voltar()
+    {
+        Navigation.NavigateTo("/Cadastros/cadastros");
+    }
+
+    private async Task EditarImovel(ImovelModel imovel)
+    {       
+        Navigation.NavigateTo($"/Cadastros/Imoveis/RegistroImovel/{imovel.Id}");
+    }
+    private async void ExcluirImovel(int id)
+    {
+        await imovelService.DeleteRegistro(id);
+        snackBar.Add("Imóvel excluído com sucesso!", Severity.Success);
+        StateHasChanged();
+        await GetImoveis();
+    }
+
+}
+

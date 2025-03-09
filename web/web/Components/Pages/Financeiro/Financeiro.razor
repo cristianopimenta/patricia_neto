@@ -1,0 +1,70 @@
+﻿@page "/Financeiro/Financeiro"
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@rendermode InteractiveServer
+@inject MudBlazor.ISnackbar snackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<PageTitle>Financeiro</PageTitle>
+
+<MudText Align="Align.Center" Class="titulo-text">Qual módulo você quer acessar?</MudText>
+
+
+<div class="button-container">
+
+    <MudButton OnClick="() => PlanoContas()" Class="custom-button">Plano de Contas</MudButton>
+    <MudButton OnClick="() => ContasPagar()" Class="custom-button">Contas a pagar</MudButton>
+    <MudButton OnClick="() => ContasReceber()" Class="custom-button">Contas a Receber</MudButton>
+    <MudButton OnClick="() => DerRelatorio()" Class="custom-button">DER</MudButton>
+    <MudButton OnClick="() => RelatorioFinanceiro()" Class="custom-button">Relatório Financeiro</MudButton>
+</div>
+
+
+<div class="button-container">
+
+    <MudButton OnClick="() => FornecedoresLista()" Class="custom-button">Fornecedores</MudButton>
+    <MudButton Class="custom-button">Inadimplentes</MudButton>
+    <MudButton Class="custom-button">2º Via Cobrança</MudButton>
+    <MudButton Class="custom-button">Notificação Cobrança</MudButton>
+    <MudButton Class="custom-button">Controle Remessa/Retorno</MudButton>
+</div>
+
+
+
+@code {
+
+    private void PlanoContas()
+    {
+        Navigation.NavigateTo("/Financeiro/planocontas/ListaPlanoContas");
+
+    }
+    private void ContasPagar()
+    {
+        Navigation.NavigateTo("/financeiro/contaspagar/lista");
+
+    }
+    private void ContasReceber()
+    {
+        Navigation.NavigateTo("/financeiro/contasreceber/lista");
+
+    }
+
+    private void DerRelatorio()
+    {
+        Navigation.NavigateTo("financeiro/relatorio/der");
+
+    }
+
+    private void RelatorioFinanceiro()
+    {
+        Navigation.NavigateTo("/financeiro/relatorio/relatoriofinanceiro");
+    }
+    private void FornecedoresLista()
+    {
+        Navigation.NavigateTo("/financeiro/fornecedores/lista");
+    }
+
+}

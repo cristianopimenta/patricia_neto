@@ -1,0 +1,1049 @@
+﻿@page "/Cadastros/Pessoas/Pessoa/"
+@page "/Cadastros/Pessoas/Pessoa/{id:int}"
+@using Microsoft.AspNetCore.WebUtilities
+@using web.Components.Layout
+@layout MainLayout
+
+@inject MudBlazor.ISnackbar mensagem
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+
+@inject IPessoa pessoaService
+@inject IPessoaDocumento pessoaDocumentoService
+@inject IPessoaContato pessoaContatoService
+@inject IPessoaVeiculo pessoaVeiculoService
+@inject IPessoaEnderecos pessoaEnderecoService
+@inject IImoveis imovelService
+@inject HelperConfiguracoes HtipoMorador
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+
+<MudGrid style="position: relative;  padding: 15px;">
+    <MudItem xs="12">
+        <MudPaper Class="d-flex align-items-center justify-content-between"
+                  Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+            <div class="d-flex align-items-center">
+                <MudIcon Icon="@Icons.Material.Filled.AddHome" Color="Color.Warning" Size="Size.Large"/>
+                <MudText Class="ml-2" Typo="Typo.h4" Color="@Color.Warning">
+                    Cadastro
+                    de @HtipoMorador.TipoMorador
+                </MudText>
+            </div>
+
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+<MudDivider/>
+<br/>
+
+<MudCard Elevation="8">
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" @ref="tabs">
+        <MudTabPanel Text="@HtipoMorador.TipoMorador" Disabled="false">
+            <MudCardContent>
+                <MudSnackbarProvider/>
+                <MudForm @ref="form" Model="pessoa" OnValidSubmit="SalvarDados" OnInvalidSubmit="MostrarErros">
+
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="@HtipoMorador.TipoMorador" Label="Tipo Registro"
+                                          Placeholder="@HtipoMorador.TipoMorador"
+                                          Disabled="true"/>
+                        </MudItem>
+                        <MudItem xs="6" md="6">
+
+                            <MudSelect @bind-Value="pessoa.TipoMorador" Label="Tipo Morador"
+                                       Placeholder="Selecione tipo morador"
+                                       AdornmentIcon="@Icons.Material.Filled.Home" AdornmentColor="Color.Primary">
+                                <MudSelectItem Value="@("Morador")">Morador</MudSelectItem>
+                                <MudSelectItem Value="@("Inquilino")">Inquilno</MudSelectItem>
+                                <MudSelectItem Value="@("Preposto")">Preposto</MudSelectItem>
+                                <MudSelectItem Value="@("Proprietario")">Proprietário</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="pessoa.Nome" Label="Nome" Required="true"
+                                          RequiredError="Campo obrigatório"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="pessoa.EmailPrincipal" Label="Email" Required="true"
+                                          RequiredError="Campo obrigatório"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="pessoa.TelefonePrincipal"
+                                          Label="Telefone"
+                                          Mask="@(new PatternMask("(00) 00000-0000"))"
+                                          Required="true"
+                                          RequiredError="Campo obrigatório"/>
+                        </MudItem>
+
+                        <MudItem xs="6" md="6">
+
+                            <MudSelect @bind-Value="pessoa.Sexo" Label="Sexo" Placeholder="Selecione o sexo"
+                                       AdornmentIcon="@Icons.Material.Filled.Face" AdornmentColor="Color.Primary">
+                                <MudSelectItem Value="@("Masculino")">Masculino</MudSelectItem>
+                                <MudSelectItem Value="@("Feminino")">Feminino</MudSelectItem>
+                                <MudSelectItem Value="@("Não Informar")">Não Informar</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="6" md="6">
+                            <MudTextField @bind-Value="pessoa.CpfPessoa"
+                                          Label="CPF ou Número de Passaporte"
+                                          Required="true"
+                                          RequiredError="Campo obrigatório"
+                                          Disabled=_cpf>
+                                
+                            </MudTextField>
+
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+
+                            <MudTextField @bind-Value="pessoa.Pai" Label="Nome do Pai"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="pessoa.Mae" Label="Nome da Mãe"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="pessoa.DataNascimento" Format="yyyy-MM-dd"
+                                          Label="Data Nascimento" InputType="InputType.Date" Required="true"
+                                          RequiredError="Campo obrigatório"/>
+
+                        </MudItem>
+
+
+                    </MudGrid>
+                    <MudSpacer/>
+                    <MudCardActions>
+                        <MudButton Color="Color.Success" Variant="Variant.Filled" Class="ml-12" OnClick="SalvarPessoa">
+                            Salvar Registro
+                        </MudButton>
+
+                        <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12" OnClick="SalvarPessoa"
+                                   Disabled="_botaoPermanente">
+                            Ativar para Permanente
+                        </MudButton>
+
+                        <MudButton Color="Color.Default" Variant="Variant.Filled" Class="ml-12" OnClick="SalvarPessoa"
+                                   Disabled="_botaoTemporario">
+                            Ativar para Temporário
+                        </MudButton>
+                    </MudCardActions>
+                </MudForm>
+            </MudCardContent>
+        </MudTabPanel>
+        <MudTabPanel Text="Documentos" Disabled=_documentos>
+
+            <MudGrid style="position: relative;  padding:10px;">
+
+                <MudItem xs="12">
+                    <MudPaper Class="d-flex align-items-center justify-content-between"
+                              Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+                        <div class="d-flex align-items-center">
+                            <MudIcon Icon="@Icons.Material.Filled.DocumentScanner" Color="Color.Info"
+                                     Size="Size.Large"/>
+                            <MudText Class="ml-2" Typo="Typo.h5" Color="@Color.Info">Controle de documentação</MudText>
+                        </div>
+
+
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+            <MudDivider/>
+            <MudTabs Elevation="1" Rounded="true" Style="background-color: transparent;padding: 30px;">
+                <MudTabPanel Text="Documentos" ToolTip="Incluir documento">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudForm @ref="form" Model="pessoaDocumento" OnValidSubmit="HandleValidSubmit">
+                                <MudGrid>
+                                    <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="pessoaDocumento.documento" Label="Documento"/>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudSelect @bind-Value="pessoaDocumento.tipoDocumento"
+                                                   Label="Tipo de documento">
+                                            <MudSelectItem Value="@TipoDocumento.RG">RG</MudSelectItem>
+                                            <MudSelectItem Value="@TipoDocumento.CNH">CNH</MudSelectItem>
+                                            <MudSelectItem Value="@TipoDocumento.RegistroInternacional">
+                                                Registro
+                                                Internacional
+                                            </MudSelectItem>
+
+                                        </MudSelect>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="_DocumentoUnico" Label="CPF Pessoa"
+                                                      Placeholder="CPF Pessoa"
+                                                      Disabled="true"/>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="pessoaDocumento.dataVencimentoDocumento"
+                                                      Format="yyyy-MM-dd" Label="Validade" InputType="InputType.Date"/>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudCheckBox @bind-Value="pessoaDocumento.ativo" Label="Ativo"/>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudForm>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                                       OnClick="SalvarDocumento">
+                                Salvar Documento
+                            </MudButton>
+
+                        </MudCardActions>
+                    </MudCard>
+                </MudTabPanel>
+
+                <MudTabPanel Text="Lista de documentos" ToolTip="Lista de documentos">
+                    <MudTable Items="listapessoasDocumentos ?? new List<PessoaDocumento>()" Dense="@dense"
+                              Hover="@hover" Bordered="@bordered"
+                              Striped="@striped" Filter="Search" @bind-SelectedItem="selectedItem1">
+                        <HeaderContent>
+                            <MudTh>Código</MudTh>
+                            <MudTh>CPF / N. Passaporte</MudTh>
+                            <MudTh>Documento</MudTh>
+                            <MudTh>Validade</MudTh>
+
+                        </HeaderContent>
+
+                        <RowTemplate Context="context_pessoadoc">
+                            <MudTd DataLabel="Código">@context_pessoadoc.Id</MudTd>
+                            <MudTd DataLabel="CPF Pessoa">@context_pessoadoc.CpfPessoa</MudTd>
+                            <MudTd DataLabel="Documento">@context_pessoadoc.documento</MudTd>
+                            <MudTd DataLabel="Validade">@context_pessoadoc.dataVencimentoDocumento</MudTd>
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
+                                           OnClick="() => ExcluirDocumento(context_pessoadoc)"/>
+                        </RowTemplate>
+
+                        <PagerContent>
+                            <MudTablePager/>
+                        </PagerContent>
+                    </MudTable>
+                </MudTabPanel>
+
+            </MudTabs>
+        </MudTabPanel>
+        <MudTabPanel Text="Contatos" Disabled=_contato>
+
+            <MudGrid style="position: relative;  padding:10px;">
+
+                <MudItem xs="12">
+                    <MudPaper Class="d-flex align-items-center justify-content-between"
+                              Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+                        <div class="d-flex align-items-center">
+                            <MudIcon Icon="@Icons.Material.Filled.DocumentScanner" Color="Color.Info"
+                                     Size="Size.Large"/>
+                            <MudText Class="ml-2" Typo="Typo.h5" Color="@Color.Info">Controle de contatos</MudText>
+                        </div>
+
+
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+            <MudDivider/>
+            <MudTabs Elevation="1" Rounded="true" Style="background-color: transparent;padding: 30px;">
+                <MudTabPanel Text="Contatos" ToolTip="Incluir Contato">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudForm @ref="form" Model="pessoaContato" OnValidSubmit="HandleValidSubmit">
+                                <MudGrid>
+
+                                    <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="pessoaContato.CpfPessoa" Label="CPF/Passporte"
+                                                      Disabled="true"/>
+                                        <MudTextField @bind-Value="pessoaContato.Email" Label="E-mail"/>
+                                        <MudTextField @bind-Value="pessoaContato.TelefoneCelular"
+                                                      Label="Telefone Celular"/>
+                                        <MudTextField @bind-Value="pessoaContato.TelefoneFixo" Label="Telefone Fixo"/>
+                                        <MudTextField @bind-Value="pessoaContato.Ramal" Label="Ramal"/>
+                                        <MudTextField @bind-Value="pessoaContato.CodigoAcesso"
+                                                      Label="Código de Acesso"/>
+                                    </MudItem>
+
+                                    <MudItem xs="12" md="6">
+
+                                        <MudSwitch @bind-Value="pessoaContato.permiteAcessoToten" Color="Color.Success"
+                                                   UncheckedColor="Color.Error"
+                                                   Label="Permitir acesso pelo toten?"/>
+                                        <MudSwitch @bind-Value="pessoaContato.AcessarSomenteLocalidade"
+                                                   Color="Color.Success" UncheckedColor="Color.Error"
+                                                   Label="Acessar somente sua localidade?"/>
+                                        <MudTextField @bind-Value="pessoaContato.Obervacao" Label="Observações"/>
+                                    </MudItem>
+
+                                    <MudItem xs="12">
+                                        <MudSwitch @bind-Value="pessoaContato.ApresentarObservacoesTodosAcessos"
+                                                   Color="Color.Success" UncheckedColor="Color.Error"
+                                                   Label="Apresentar observação em todos acessos"/>
+                                        <MudTextField @bind-Value="pessoaContato.ObservacaoSeguranca"
+                                                      Label="Observação segurança"/>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudForm>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                                       OnClick="SalvarContato">
+                                Salvar Contato
+                            </MudButton>
+
+                        </MudCardActions>
+                    </MudCard>
+                </MudTabPanel>
+
+                <MudTabPanel Text="Lista de contatos" ToolTip="Lista de contatos">
+                    <MudTable Items="listapessoasContatos ?? new List<PessoaContato>()" Dense="@dense" Hover="@hover"
+                              Bordered="@bordered"
+                              Striped="@striped" Filter="FiltroContato" @bind-SelectedItem="selectedItem2">
+                        <HeaderContent>
+                            <MudTh>Código</MudTh>
+                            <MudTh>CPF / N. Passaporte</MudTh>
+                            <MudTh>E-mail</MudTh>
+                            <MudTh>Celular</MudTh>
+
+                        </HeaderContent>
+
+                        <RowTemplate Context="context_pessoacontato">
+                            <MudTd DataLabel="Código">@context_pessoacontato.Id</MudTd>
+                            <MudTd DataLabel="CPF Pessoa">@context_pessoacontato.CpfPessoa</MudTd>
+                            <MudTd DataLabel="Email">@context_pessoacontato.Email</MudTd>
+                            <MudTd DataLabel="Celular">@context_pessoacontato.TelefoneCelular</MudTd>
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
+                                           OnClick="() => ExcluirContato(context_pessoacontato)"/>
+                        </RowTemplate>
+
+                        <PagerContent>
+                            <MudTablePager/>
+                        </PagerContent>
+                    </MudTable>
+                </MudTabPanel>
+
+            </MudTabs>
+        </MudTabPanel>
+
+        <MudTabPanel Text="Dados Veículos" Disabled=_veiculos>
+            <MudGrid style="position: relative;  padding:10px;">
+
+                <MudItem xs="12">
+                    <MudPaper Class="d-flex align-items-center justify-content-between"
+                              Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+                        <div class="d-flex align-items-center">
+                            <MudIcon Icon="@Icons.Material.Filled.DocumentScanner" Color="Color.Info"
+                                     Size="Size.Large"/>
+                            <MudText Class="ml-2" Typo="Typo.h5" Color="@Color.Info">Controle de documentação</MudText>
+                        </div>
+
+
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+            <MudDivider/>
+            <MudTabs Elevation="1" Rounded="true" Style="background-color: transparent;padding: 30px;">
+                <MudTabPanel Text="Veículos" ToolTip="Incluir veículo">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudForm @ref="form" Model="pessoaVeiculo" OnValidSubmit="HandleValidSubmit">
+                                <MudGrid>
+                                    <MudItem xs="12" md="2">
+                                        <MudTextField @bind-Value="pessoaVeiculo.CpfPessoa" Label="CPF/Passporte"
+                                                      Disabled="true"/>
+                                    </MudItem>
+                                    <MudItem xs="12" md="2">
+                                        <MudTextField @bind-Value="pessoaVeiculo.Placa" Label="Placa"/>
+                                    </MudItem>
+                                    <MudItem xs="12" md="2">
+                                        <MudTextField @bind-Value="pessoaVeiculo.MarcaModelo" Label="Marca/Modelo"/>
+                                    </MudItem>
+                                    <MudItem xs="12" md="2">
+                                        <MudTextField @bind-Value="pessoaVeiculo.Cor" Label="Cor"/>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudForm>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                                       OnClick="SalvarVeiculo">
+                                Salvar Veículo
+                            </MudButton>
+
+                        </MudCardActions>
+                    </MudCard>
+                </MudTabPanel>
+
+                <MudTabPanel Text="Lista de veículos" ToolTip="Lista de veículos">
+                    <MudTable Items="listapessoasVeiculos ?? new List<PessoaVeiculo>()" Dense="@dense"
+                              Hover="@hover" Bordered="@bordered"
+                              Striped="@striped" Filter="FiltroVeiculo" @bind-SelectedItem="selectedItem3">
+                        <HeaderContent>
+                            <MudTh>Placa</MudTh>
+                            <MudTh>Marca/Modelo</MudTh>
+                            <MudTh>Cor</MudTh>
+
+                        </HeaderContent>
+
+                        <RowTemplate Context="context_pessoaVeiculo">
+                            <MudTd DataLabel="Placa">@context_pessoaVeiculo.Id</MudTd>
+                            <MudTd DataLabel="Marca/Modelo">@context_pessoaVeiculo.MarcaModelo</MudTd>
+                            <MudTd DataLabel="COR">@context_pessoaVeiculo.Cor</MudTd>
+
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
+                                           aria-label="Excluir"/>
+
+                        </RowTemplate>
+
+                        <PagerContent>
+                            <MudTablePager/>
+                        </PagerContent>
+                    </MudTable>
+                </MudTabPanel>
+
+            </MudTabs>
+        </MudTabPanel>
+        <MudTabPanel Text="Endereços" Disabled=_enderecos>
+            <MudPaper Class="pa-4">
+                <MudForm @ref="form" @bind-IsValid="isValid">
+                    <MudGrid>
+                        <MudItem xs="12" sm="6">
+                            <MudTextField @bind-Value="pessoaEndereco.CpfPessoa" Label="CPF Pessoa" Required="true"/>
+                        </MudItem>
+
+                        <MudItem xs="12">
+
+                            <!-- Campo de Busca -->
+                            <MudTextField @bind-Value="BuscaQuadra" Label="Quadra" Variant="Variant.Outlined"/>
+                            <MudTextField @bind-Value="BuscaLote" Label="Lote" Variant="Variant.Outlined"/>
+                            <MudButton OnClick="PesquisarImoveis" Color="Color.Primary" Class="mt-2">Pesquisar
+                            </MudButton>
+
+                            <!-- Grid de Resultados -->
+                            <MudTable Items="imoveisFiltrados" Dense="true" Hover="true" Class="mt-4">
+                                <HeaderContent>
+                                    <MudTh>Quadra</MudTh>
+                                    <MudTh>Lote</MudTh>
+                                    <MudTh>Ações</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd>@context.Quadra</MudTd>
+                                    <MudTd>@context.Lote</MudTd>
+                                    <MudTd>
+                                        <MudButton OnClick="@(() => SelecionarImovel(@context))"
+                                                   Color="Color.Success" Variant="Variant.Text">Selecionar
+                                        </MudButton>
+                                    </MudTd>
+                                </RowTemplate>
+                            </MudTable>
+
+                            <!-- Exibição do Imóvel Selecionado -->
+                            <MudTextField @bind-Value="pessoaEndereco.Imovel" Label="Imóvel Selecionado" Disabled="true"
+                                          Variant="Variant.Outlined"/>
+                        </MudItem>
+
+                        <MudItem xs="12" sm="6">
+                            <MudTextField @bind-Value="pessoaEndereco.IdUsuario" Label="Usuário Responsável"/>
+                        </MudItem>
+
+                        <MudItem xs="12">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SalvarEndereco"
+                                       Disabled="!isValid">
+                                Salvar Endereço
+                            </MudButton>
+
+                        </MudItem>
+                    </MudGrid>
+                </MudForm>
+            </MudPaper>
+
+        </MudTabPanel>
+
+        <MudTabPanel Text="Foto" Disabled=_foto>
+            <MudText>Content Disabled</MudText>
+        </MudTabPanel>
+
+        <MudSpacer/>
+        <MudCardActions>
+            <MudButton Color="Color.Info" Variant="Variant.Filled" Class="ml-12" OnClick="CloseModal">
+                Voltar Lista de
+                registros
+            </MudButton>
+        </MudCardActions>
+    </MudTabs>
+</MudCard>
+
+
+
+@code {
+    [Parameter] public int? Id { get; set; }
+    [Parameter] public string? vTipoCadastro { get; set; }
+
+    MudTabs tabs;
+    MudTabPanel pnDadosBasicos01;
+    MudTabPanel pnDocumentos02;
+    MudTabPanel pnContatos03;
+    MudTabPanel pnVeiculos04;
+    MudTabPanel pnEnderecos05;
+    MudTabPanel pnFotos06;
+
+
+    private HashSet<string> options { get; set; } = new HashSet<string>();
+    private string[] Tipobusca = { "CNH", "RG", "Internacional", "Passaporte" };
+
+    private MudForm form;
+    private PessoaModel pessoa { get; set; } = new();
+    private int activeTabIndex = 0;
+    private String? _DocumentoUnico;
+    private bool isValid;
+    private string MensagemErro { get; set; }
+
+    // Propriedades de busca endereco
+    private string BuscaQuadra { get; set; }
+    private string BuscaLote { get; set; }
+    private PessoaEndereco pessoaEndereco = new PessoaEndereco();
+
+    // Lista de imóveis disponíveis e filtrados
+    private List<ImovelModel> imoveisDisponiveis = new List<ImovelModel>(); // Popule essa lista com dados reais
+    private List<ImovelModel> imoveisFiltrados = new List<ImovelModel>();
+
+
+    private PessoaDocumento pessoaDocumento;
+    private PessoaContato pessoaContato;
+    private PessoaVeiculo pessoaVeiculo;
+
+
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+    private bool _cpf = false;
+    private bool _documentos, _contato, _veiculos, _enderecos, _foto = true;
+    private bool _botaoPermanente, _botaoTemporario = true;
+
+    private string searchString = string.Empty; // Usaremos apenas uma string de busca
+    private string searchContatoString = string.Empty; // Usaremos apenas uma string de busca
+    private string searchVeiculoString = string.Empty; // Usaremos apenas uma string de busca
+    private string searchEnderecoString = string.Empty; // Usaremos apenas uma string de busca
+
+    private PessoaDocumento selectedItem1 = null;
+    private PessoaContato selectedItem2 = null;
+    private PessoaVeiculo selectedItem3 = null;
+    private PessoaEndereco selectedItem4 = null;
+
+    private IEnumerable<PessoaDocumento> listapessoasDocumentos = new List<PessoaDocumento>();
+    private IEnumerable<PessoaContato> listapessoasContatos = new List<PessoaContato>();
+    private IEnumerable<PessoaVeiculo> listapessoasVeiculos = new List<PessoaVeiculo>();
+    private IEnumerable<PessoaEndereco> listapessoasEnderecos = new List<PessoaEndereco>();
+
+    private IDialogReference _dialogReference;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        SetUserId();
+        _documentos = true;
+        _veiculos = true;
+        _contato = true;
+        _foto = true;
+        _enderecos = true;
+        _botaoPermanente = true;
+        _botaoTemporario = true;
+
+        await CarregarImoveis();
+
+
+        try
+        {
+            var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("id", out var idParam) && int.TryParse(idParam, out var id))
+            {
+                Console.WriteLine($"Id recebido via QueryString: {id}");
+                if (id > 0)
+                {
+                    pessoa = await pessoaService.GetRegistroById(id);
+                    await GetPessoaDocumento();
+                    _cpf = true; // Desabilita a edição do CPF ao editar
+                    await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+                    _DocumentoUnico = pessoa.CpfPessoa;
+
+
+                    if (pessoa != null && !string.IsNullOrEmpty(pessoa.CpfPessoa))
+                    {
+                        pessoaDocumento = new PessoaDocumento(cpfPessoa: pessoa.CpfPessoa.ToString());
+                        pessoaContato = new PessoaContato(cpfPessoa: pessoa.CpfPessoa.ToString());
+                        pessoaVeiculo = new PessoaVeiculo(cpfPessoa: pessoa.CpfPessoa.ToString());
+                        pessoaEndereco = new PessoaEndereco(cpfPessoa: pessoa.CpfPessoa.ToString());
+                    }
+                    else
+                    {
+                        pessoaDocumento = new PessoaDocumento(cpfPessoa: ""); // Valor padrão ou tratamento de erro
+                        pessoaContato = new PessoaContato(cpfPessoa: ""); // Valor padrão ou tratamento de erro
+                        pessoaVeiculo = new PessoaVeiculo(cpfPessoa: ""); // Valor padrão ou tratamento de erro
+                        pessoaEndereco = new PessoaEndereco(cpfPessoa: ""); // Valor padrão ou tratamento de erro
+                    }
+
+                    _documentos = false;
+                    _veiculos = false;
+                    _contato = false;
+                    _foto = false;
+                    _enderecos = false;
+
+                    if (HtipoMorador.TipoRegistro)
+                    {
+                        if (HtipoMorador.TipoMorador == "Permanentes")
+                        {
+                            _botaoPermanente = true;
+                            _botaoTemporario = false;
+                        }
+                        else if (HtipoMorador.TipoMorador == "Temporario")
+                        {
+                            _botaoPermanente = false;
+                            _botaoTemporario = true;
+                        }
+                        else if (HtipoMorador.TipoMorador == "Pessoas")
+                        {
+                            _botaoPermanente = false;
+                            _botaoTemporario = false;
+                        }
+                    }
+                    else
+                    {
+                        _botaoPermanente = true;
+                        _botaoTemporario = true;
+                    }
+                }
+                else
+                {
+                    mensagem.Add("Registro não encontrado.", Severity.Error);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    void Activate(int index)
+    {
+        tabs.ActivatePanel(index);
+    }
+
+    private async Task SalvarPessoa()
+    {
+        await form.Validate();
+        if (!form.IsValid)
+        {
+            mensagem.Add("Por favor, preencha todos os campos obrigatórios.", Severity.Error);
+            return;
+        }
+
+        if (pessoa.Id > 0)
+        {
+            // Atualiza o registro
+            pessoa.Tipo = HtipoMorador.TipoMorador;
+            await pessoaService.SalvarRegistro(pessoa);
+            await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+            mensagem.Add("Morador atualizado com sucesso.", Severity.Success);
+        }
+        else
+        {
+            _DocumentoUnico = pessoa.CpfPessoa.ToString();
+            pessoa.Tipo = @HtipoMorador.TipoMorador;
+            pessoa.ApresentaMensagemEntrada = "N";
+            await pessoaService.SalvarRegistro(pessoa);
+            await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+            mensagem.Add("Pessoa cadastrada com sucesso!", Severity.Success);
+            InicializarPessoaDocumento();
+            Console.WriteLine("Dados salvos com sucesso!");
+        }
+
+
+        _documentos = false;
+        _cpf = true;
+        Activate(1);
+    }
+
+    private async Task CancelarEdicao()
+    {
+        // Exibe mensagem de confirmação
+        var confirm = await JSRuntime.InvokeAsync<bool>("confirm", "Deseja realmente cancelar a edição?");
+        if (confirm)
+        {
+            // Desativa proteção de navegação
+            await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+            // Navega para outra página ou reseta o formulário
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        // Limpar o evento onbeforeunload ao sair do componente
+        await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+    }
+
+
+    private async Task CloseModal()
+    {
+        try
+        {
+            Console.WriteLine("Fechando o formulário...");
+            // Exibe mensagem de confirmação
+            var confirm = await JSRuntime.InvokeAsync<bool>("confirm", "Deseja realmente cancelar a edição?");
+            if (confirm)
+            {
+                // Desativa proteção de navegação
+                await JSRuntime.InvokeVoidAsync("preventNavigation", false);
+                // Navega para outra página ou reseta o formulário
+                Navigation.NavigateTo("/Cadastros/Pessoas/Lista");
+                DisposeAsync();
+            }
+
+            // Aqui você pode implementar a lógica para fechar ou resetar o formulário
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao fechar o formulário: {ex.Message}");
+        }
+    }
+
+    //com timeline
+    [Inject] IDialogService DialogServices { get; set; }
+
+    private List<TimelineItem> timelineItems = new List<TimelineItem>
+    {
+        new TimelineItem { Id = 1, Title = "Evento 1", Description = "Descrição do Evento 1" },
+        new TimelineItem { Id = 2, Title = "Evento 2", Description = "Descrição do Evento 2" }
+        // Adicione mais itens conforme necessário
+    };
+
+    public class TimelineItem
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+    }
+
+    private async Task<IEnumerable<PessoaDocumento>> GetPessoaDocumento()
+    {
+        if (string.IsNullOrEmpty(pessoa.CpfPessoa))
+        {
+            mensagem.Add("Documento único não fornecido.", Severity.Error);
+            return Enumerable.Empty<PessoaDocumento>();
+        }
+        else
+        {
+            _DocumentoUnico = pessoa.CpfPessoa;
+            listapessoasDocumentos = await pessoaDocumentoService.GetDocumentoUnico(_DocumentoUnico);
+            return listapessoasDocumentos;
+        }
+    }
+
+    private bool Search(PessoaDocumento pessoa)
+    {
+        return string.IsNullOrEmpty(searchString) ||
+               pessoa.CpfPessoa.Contains(searchString, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void Pesquisar()
+    {
+        // Função que pode ser usada para alguma lógica adicional de pesquisa
+        StateHasChanged();
+    }
+
+    //documentos
+    private void InicializarPessoaDocumento()
+    {
+        if (pessoaDocumento == null)
+        {
+            pessoaDocumento = new PessoaDocumento(cpfPessoa: pessoa.CpfPessoa); // Inicializa com valores padrões
+        }
+    }
+
+    private async Task SalvarDocumento()
+    {
+        if (pessoaDocumento.dataVencimentoDocumento.HasValue)
+        {
+            pessoaDocumento.dataVencimentoDocumento = pessoaDocumento.dataVencimentoDocumento.Value.ToUniversalTime();
+        }
+
+        if (pessoaDocumento.dataRegistroDocumento.HasValue)
+        {
+            pessoaDocumento.dataVencimentoDocumento = DateTime.UtcNow;
+        }
+
+        try
+        {
+            await pessoaDocumentoService.SalvarRegistro(pessoaDocumento);
+            mensagem.Add("Documento cadastrado com sucesso!", Severity.Success);
+            // Navigation.NavigateTo("/Cadastros/Pessoas/ListaDocumentos");
+            Console.WriteLine("Dados salvos com sucesso!");
+            Activate(2);
+            GetPessoaDocumento();
+            InicializarPessoaContato();
+            _contato = false;
+            pessoaDocumento.documento = "";
+            pessoaDocumento.dataVencimentoDocumento = DateTime.Now;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao salvar o documento: {ex.Message}");
+        }
+    }
+
+    private async Task ExcluirDocumento(PessoaDocumento documento)
+    {
+        // Pergunta de confirmação para o usuário
+        var confirm = await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja excluir este documento?");
+        if (confirm)
+        {
+            // Aqui você pode também remover o documento no backend, se necessário
+            await pessoaDocumentoService.DeleteRegistro(documento.Id);
+            InicializarPessoaDocumento();
+            StateHasChanged();
+            // Mensagem de sucesso
+            mensagem.Add("Documento excluído com sucesso!", Severity.Success);
+        }
+    }
+
+    //contatos
+    private void InicializarPessoaContato()
+    {
+        if (pessoaContato == null)
+        {
+            pessoaContato = new PessoaContato(cpfPessoa: pessoa.CpfPessoa); // Inicializa com valores padrões
+        }
+    }
+
+    private bool FiltroContato(PessoaContato contato)
+    {
+        return string.IsNullOrEmpty(searchContatoString) ||
+               contato.CpfPessoa.Contains(searchContatoString, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private async Task ExcluirContato(PessoaContato contato)
+    {
+        // Pergunta de confirmação para o usuário
+        var confirm = await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja excluir este documento?");
+        if (confirm)
+        {
+            // Aqui você pode também remover o documento no backend, se necessário
+            await pessoaContatoService.DeleteRegistroContato(contato.Id);
+            InicializarPessoaDocumento();
+            StateHasChanged();
+            // Mensagem de sucesso
+            mensagem.Add("Documento excluído com sucesso!", Severity.Success);
+        }
+    }
+
+    private async Task<IEnumerable<PessoaContato>> GetPessoaContato()
+    {
+        if (string.IsNullOrEmpty(pessoa.CpfPessoa))
+        {
+            mensagem.Add("Documento único não fornecido.", Severity.Error);
+            return Enumerable.Empty<PessoaContato>();
+        }
+        else
+        {
+            _DocumentoUnico = pessoa.CpfPessoa;
+            listapessoasContatos = await pessoaContatoService.GetContatoUnico(_DocumentoUnico);
+            return listapessoasContatos;
+        }
+    }
+
+    private async Task SalvarContato()
+    {
+        try
+        {
+            await pessoaContatoService.SalvarRegistroContato(pessoaContato);
+            mensagem.Add("Contato cadastrado com sucesso!", Severity.Success);
+            // Navigation.NavigateTo("/Cadastros/Pessoas/ListaDocumentos");
+            Console.WriteLine("Dados salvos com sucesso!");
+
+            pessoaContato = new PessoaContato(_DocumentoUnico);
+            _veiculos = false;
+            Activate(3);
+            InicializarPessoaVeiculo();
+            GetPessoaContato();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao salvar o documento: {ex.Message}");
+        }
+    }
+
+    //veiculos
+    private void InicializarPessoaVeiculo()
+    {
+        if (pessoaVeiculo == null)
+        {
+            pessoaVeiculo = new PessoaVeiculo(cpfPessoa: pessoa.CpfPessoa); // Inicializa com valores padrões
+        }
+    }
+
+    private bool FiltroVeiculo(PessoaVeiculo veiculo)
+    {
+        return string.IsNullOrEmpty(searchVeiculoString) ||
+               veiculo.CpfPessoa.Contains(searchVeiculoString, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private async Task<IEnumerable<PessoaVeiculo>> GetPessoaVeiculo()
+    {
+        if (string.IsNullOrEmpty(pessoa.CpfPessoa))
+        {
+            mensagem.Add("Documento único não fornecido.", Severity.Error);
+            return Enumerable.Empty<PessoaVeiculo>();
+        }
+        else
+        {
+            _DocumentoUnico = pessoa.CpfPessoa;
+            listapessoasVeiculos = await pessoaVeiculoService.GetVeiculoUnico(_DocumentoUnico);
+            return listapessoasVeiculos;
+        }
+    }
+
+    private async Task SalvarVeiculo()
+    {
+        try
+        {
+            await pessoaVeiculoService.SalvarRegistroVeiculo(pessoaVeiculo);
+            mensagem.Add("Veículo cadastrado com sucesso!", Severity.Success);
+            // Navigation.NavigateTo("/Cadastros/Pessoas/ListaDocumentos");
+            Console.WriteLine("Dados salvos com sucesso!");
+
+            pessoaVeiculo = new PessoaVeiculo(_DocumentoUnico);
+
+            Activate(4);
+            InicializarEnderecos();
+            GetPessoaVeiculo();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao salvar o documento: {ex.Message}");
+        }
+    }
+
+    //enderecos viculado a imoveis
+
+    private void InicializarEnderecos()
+    {
+        if (pessoaEndereco == null)
+        {
+            pessoaEndereco = new PessoaEndereco(cpfPessoa: pessoa.CpfPessoa); // Inicializa com valores padrões
+        }
+    }
+
+    private bool FiltroEndereco(PessoaEndereco endereco)
+    {
+        return string.IsNullOrEmpty(searchEnderecoString) ||
+               endereco.CpfPessoa.Contains(searchEnderecoString, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private async Task<IEnumerable<PessoaEndereco>> GetPessoaEndereco()
+    {
+        if (string.IsNullOrEmpty(pessoa.CpfPessoa))
+        {
+            mensagem.Add("Documento único não fornecido.", Severity.Error);
+            return Enumerable.Empty<PessoaEndereco>();
+        }
+        else
+        {
+            _DocumentoUnico = pessoa.CpfPessoa;
+            listapessoasEnderecos = await pessoaEnderecoService.GetEnderecoUnico(_DocumentoUnico);
+            return listapessoasEnderecos;
+        }
+    }
+
+    private async Task SalvarEndereco()
+    {
+        try
+        {
+            if (!isValid)
+            {
+                mensagem.Add("Por favor, preencha todos os campos obrigatórios.", Severity.Error);
+                return;
+            }
+            else
+            {
+                await pessoaEnderecoService.SalvarRegistroEndereco(pessoaEndereco);
+                mensagem.Add("Endereço cadastrado com sucesso!", Severity.Success);
+                // Navigation.NavigateTo("/Cadastros/Pessoas/ListaDocumentos");
+                Console.WriteLine("Dados salvos com sucesso!");
+
+                pessoaEndereco = new PessoaEndereco(_DocumentoUnico);
+
+                Activate(4);
+                InicializarEnderecos();
+                GetPessoaEndereco();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao salvar o documento: {ex.Message}");
+        }
+    }
+
+
+    //Método para pesquisar imóveis
+
+    private void PesquisarImoveis()
+    {
+        if (imoveisDisponiveis == null || !imoveisDisponiveis.Any())
+        {
+            MensagemErro = "Nenhum imóvel disponível para busca.";
+            return;
+        }
+
+        imoveisFiltrados = imoveisDisponiveis
+            .Where(imovel =>
+                (string.IsNullOrEmpty(BuscaQuadra) || imovel.Quadra.Contains(BuscaQuadra, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(BuscaLote) || imovel.Lote.Contains(BuscaLote, StringComparison.OrdinalIgnoreCase)) &&
+                imovel.StatusImovel == StatusImovel.Liberado)
+            .ToList();
+
+        if (!imoveisFiltrados.Any())
+        {
+            MensagemErro = "Nenhum imóvel encontrado com os critérios informados.";
+        }
+        else
+        {
+            MensagemErro = string.Empty;
+        }
+    }
+
+    // Método para selecionar o imóvel
+    private void SelecionarImovel(ImovelModel imovel)
+    {
+        pessoaEndereco.ImovelId = imovel.Id; // Use a propriedade correta para armazenar o ID
+    }
+
+    private async Task CarregarImoveis()
+    {
+        var todosImoveis = await imovelService.GetImoveisAsync();
+
+        // Filtrar somente os imóveis com status "Liberado"
+        imoveisDisponiveis = todosImoveis
+            .Where(imovel => string.Equals(imovel.StatusImovel, StatusImovel.Liberado))
+            .ToList();
+    }
+
+    private async Task SetUserId()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            //informar usuario assim q entrar em login
+            pessoa.IdUsuario = user.Identity.Name;
+            pessoaDocumento.IdUsuario = user.Identity.Name;
+            pessoaContato.IdUsuario = user.Identity.Name;
+            pessoaVeiculo.IdUsuario = user.Identity.Name;
+            pessoaEndereco.IdUsuario = user.Identity.Name;
+        }
+        else
+        {
+            pessoaEndereco.IdUsuario = "Usuário desconhecido";
+        }
+    }
+
+}

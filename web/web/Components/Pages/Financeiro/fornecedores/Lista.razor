@@ -1,0 +1,63 @@
+﻿@page "/financeiro/fornecedores/lista"
+@inject FornecedorService FornecedorService
+@inject NavigationManager Navigation
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudContainer MaxWidth="MaxWidth.Large">
+
+			<MudText Typo="Typo.h4" Class="mb-4">Lista de Fornecedores</MudText>
+
+			<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToCreate" Class="mb-4">
+				Adicionar Novo Fornecedor
+			</MudButton>
+
+			<MudTable Items="@fornecedores" Hover="true" Breakpoint="Breakpoint.None">
+				<HeaderContent>
+					<MudTh>Nome</MudTh>
+					<MudTh>CNPJ</MudTh>
+					<MudTh>Telefone</MudTh>
+					<MudTh>Ações</MudTh>
+				</HeaderContent>
+				<RowTemplate>
+					<MudTd DataLabel="Nome">@context.Nome</MudTd>
+					<MudTd DataLabel="CNPJ">@context.CNPJ</MudTd>
+					<MudTd DataLabel="Telefone">@context.Telefone</MudTd>
+					<MudTd DataLabel="Ações">
+						<MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => EditFornecedor(context.Id)">
+							Editar
+						</MudButton>
+						<MudButton Variant="Variant.Text" Color="Color.Error" OnClick="() => DeleteFornecedor(context.Id)">
+							Excluir
+						</MudButton>
+					</MudTd>
+				</RowTemplate>
+			</MudTable>
+
+</MudContainer>
+
+@code {
+	private List<FornecedorModel> fornecedores = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		fornecedores = await FornecedorService.GetFornecedoresAsync();
+	}
+
+	private void NavigateToCreate()
+	{
+		Navigation.NavigateTo("/financeiro/fornecedores/createfornecedor");
+	}
+
+	private void EditFornecedor(int id)
+	{
+		Navigation.NavigateTo($"/financeiro/fornecedores/edit/{id}");
+	}
+
+	private async Task DeleteFornecedor(int id)
+	{
+		await FornecedorService.DeleteFornecedorAsync(id);
+		fornecedores = await FornecedorService.GetFornecedoresAsync();
+	}
+}

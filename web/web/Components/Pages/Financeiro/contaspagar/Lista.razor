@@ -1,0 +1,135 @@
+﻿@page "/financeiro/contaspagar/lista"
+@inject IContaPagar ContaPagarService
+@inject MudBlazor.ISnackbar snackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudText Typo="Typo.h4" GutterBottom="true">Contas a Pagar</MudText>
+
+<MudPaper Elevation="3" Class="pa-4">
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudDatePicker @bind-Date="_filterDataVencimento" Label="Data de Vencimento" />
+        </MudItem>
+        
+        <MudItem xs="12" sm="6" md="4">
+            <MudSelect @bind-Value="_filterStatus" Label="Status" T="TipoLiquidacao?">
+                <MudSelectItem Value="@(null)" T="TipoLiquidacao?">Todos</MudSelectItem>
+                @foreach (TipoLiquidacao status in Enum.GetValues(typeof(TipoLiquidacao)))
+                {
+                    <MudSelectItem Value="status" T="TipoLiquidacao?">@status.ToString()</MudSelectItem>
+                }
+            </MudSelect>
+
+
+        </MudItem>
+        <MudItem xs="12">
+            <MudButton OnClick="FilterContas" Color="Color.Primary" Variant="Variant.Filled">Filtrar</MudButton>
+            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="NovoRegistro">
+                Novo Registro
+            </MudButton>
+            <MudButton Color="Color.Error" Variant="Variant.Filled" Class="ml-12"
+                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="Voltar">
+
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+<MudTable Items="@_contasPagar" Hover="true" Striped="true" Elevation="3" Class="mt-4">
+    <HeaderContent>
+        <MudTh>Número Documento</MudTh>
+        <MudTh>Data Vencimento</MudTh>
+        <MudTh>Data Pagamento</MudTh>
+        <MudTh>Valor</MudTh>
+        <MudTh>Status</MudTh>
+        <MudTh>Ações</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Número Documento">@context.NumeroDocumento</MudTd>
+        <MudTd DataLabel="Data Vencimento">@context.DataVencimento?.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Data Pagamento">@context.DataPagamento?.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Valor">@context.ValorPagamento.ToString("C")</MudTd>
+        <MudTd DataLabel="Status">@context.StatusConta</MudTd>
+        <MudTd DataLabel="Ações">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => EditConta(context)" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => DeleteConta(context)" />
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+<MudDialog @bind-IsVisible="_isEditDialogVisible">
+    <DialogContent>
+        <MudButton ContaPagar="_selectedConta" OnSave="SaveConta" OnCancel="CancelEdit" />
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private List<ContaPagarModel> _contasPagar = new();
+    private DateTime? _filterDataVencimento;
+    private DateTime? _filterDataPagamento;
+    private TipoLiquidacao? _filterStatus;
+    private bool _isEditDialogVisible;
+    private ContaPagarModel _selectedConta = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadContas();
+    }
+
+    private async Task LoadContas()
+    {
+        _contasPagar = await ContaPagarService.GetContasPagarAsync(_filterDataVencimento, _filterDataPagamento, _filterStatus);
+    }
+
+    private async Task FilterContas()
+    {
+        await LoadContas();
+    }
+
+    private void EditConta(ContaPagarModel conta)
+    {
+        _selectedConta = conta;
+       // _isEditDialogVisible = true;
+        Navigation.NavigateTo($"/financeiro/contaspagar/editarcontapagar/{conta.Id}");
+    }
+
+    private async Task SaveConta(ContaPagarModel conta)
+    {
+        if (conta.Id == 0)
+        {
+            await ContaPagarService.AddContaPagarAsync(conta);
+        }
+        else
+        {
+            await ContaPagarService.UpdateContaPagarAsync(conta);
+        }
+        _isEditDialogVisible = false;
+        await LoadContas();
+    }
+
+    private void CancelEdit()
+    {
+        _isEditDialogVisible = false;
+    }
+
+    private async Task DeleteConta(ContaPagarModel conta)
+    {
+        await ContaPagarService.DeleteContaPagarAsync(conta.Id);
+        await LoadContas();
+    }
+
+    private async Task NovoRegistro()
+    {
+        Navigation.NavigateTo("financeiro/contaspagar/EditarContaPagar");
+    }
+    private async Task Voltar()
+    {
+        Navigation.NavigateTo("/financeiro/financeiro");
+    }
+}

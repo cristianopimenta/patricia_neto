@@ -1,0 +1,181 @@
+﻿@page "/financeiro/conciliacaobancaria/conciliacao-bancaria"
+@using web.Components.Pages.Financeiro.contasreceber
+@using web.Controller.Interface
+@using web.Controller.Services.Financeiro
+@using System.Collections.Generic;
+@using System.Globalization;
+@using System.IO;
+@using System.Linq;
+@using System.Xml.Linq;
+@using web.Enumeradores
+
+@inject IContaPagar contaPagarService
+@inject IContaReceber contaReceberService
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+<MudCard>
+    <MudCardContent>
+
+        <MudFileUpload T="IBrowserFile" FilesChanged="HandleFileSelected">
+            <ActivatorContent>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.CloudUpload">
+                    Importar Arquivo OFX/ORC
+                </MudButton>
+            </ActivatorContent>
+        </MudFileUpload>
+        <MudTable Items="listaContas">
+            <HeaderContent>
+                <MudTh>ID</MudTh>
+                <MudTh>Tipo</MudTh>
+                <MudTh>Valor</MudTh>
+                <MudTh>Data Vencimento</MudTh>
+            </HeaderContent>
+            <RowTemplate Context="item">
+                <MudTd>@item.Id</MudTd>
+                <MudTd>@(item is ContaPagarModel ? "Pagar" : "Receber")</MudTd>
+                <MudTd>@item.Valor</MudTd>
+                <MudTd>@item.DataVencimento?.ToString("dd/MM/yyyy")</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Inject]
+    private IJSRuntime JS { get; set; } = default!;
+    private string nomeUsuario = string.Empty;
+    private string stipoLancamento = string.Empty;
+
+    private List<web.ContaPagarModel> listaContasPagar = new();
+    private List<web.ContaReceberModel> listaContasReceber = new();
+
+
+
+    private List<IConta> listaContas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaContas = listaContasPagar.Cast<IConta>()
+                   .Concat(listaContasReceber.Cast<IConta>())
+                   .ToList();
+
+
+        // Obter o estado de autenticação do usuário e salvar usuario logado no registro
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            nomeUsuario = user.Identity.Name;
+        }
+    }
+
+    private async Task HandleFileSelected(IBrowserFile file)
+    {
+
+        try
+        {
+            // Abre o stream do arquivo
+            using var stream = file.OpenReadStream();
+
+            // Ler o conteúdo do arquivo
+            using var reader = new StreamReader(stream);
+            var fileContent = await reader.ReadToEndAsync();
+
+            // Exibir o conteúdo do arquivo para verificação
+            Console.WriteLine($"Conteúdo do arquivo:\n{fileContent}");
+
+            // Remover caracteres desnecessários
+            var sanitizedContent = fileContent.Trim();
+
+            var contasPagar = new List<web.ContaPagarModel?>();
+            var contasReceber = new List<web.ContaReceberModel?>();
+
+            // Parsear o conteúdo OFX diretamente
+            var ofxDocument = XDocument.Parse(sanitizedContent);
+
+            // Namespace do OFX (pode variar dependendo do arquivo)
+            XNamespace ns = "http://www.ofx.net";
+
+
+            // Extrair transações
+            var transactions = ofxDocument.Descendants(ns + "STMTTRN");
+
+            foreach (var transaction in transactions)
+            {
+                var tipoTransacao = transaction.Element(ns + "TRNTYPE")?.Value; // DEBIT ou CREDIT
+                var dataTransacao = transaction.Element(ns + "DTPOSTED")?.Value; // Data no formato YYYYMMDD
+                var valorTransacao = transaction.Element(ns + "TRNAMT")?.Value; // Valor da transação
+                var descricao = transaction.Element(ns + "MEMO")?.Value; // Descrição/Observação
+
+                // Converter valores e datas
+                var valor = decimal.Parse(valorTransacao, CultureInfo.InvariantCulture);
+                var data = DateTime.ParseExact(dataTransacao, "yyyyMMdd", CultureInfo.InvariantCulture);
+
+
+
+                // Determinar o tipo de lançamento
+                if (tipoTransacao == "DEBIT")
+                {
+
+                    // Criar uma nova conta
+                    var lancamentoPagamento = new ContaPagarModel
+                        {
+
+                            DescricaoDocumento = descricao, // Usar a descrição como número do documento
+                            ValorPagamento = Math.Abs(valor), // Garantir que o valor seja positivo
+                            DataVencimento = data,
+                            Observacoes = descricao,
+                            StatusConta = TipoLiquidacao.Pendente, // Definir status padrão
+                            CodigoMoeda = Moeda.BRL, // Definir moeda padrão
+                            usuarioId = nomeUsuario // Definir usuário padrão
+                        };
+
+                    // Adicionar a nova conta à lista de contas a pagar
+                    contasPagar.Add(lancamentoPagamento);
+                }
+                else
+                {
+                    // Criar uma nova conta
+                    var lancamentorecebimento = new ContaReceberModel
+                        {
+
+                            DescricaoDocumento = descricao, // Usar a descrição como número do documento
+                            ValorRecebimento = Math.Abs(valor), // Garantir que o valor seja positivo
+                            DataVencimento = data,
+                            Observacoes = descricao,
+                            StatusConta = TipoLiquidacao.Pendente, // Definir status padrão
+                            CodigoMoeda = Moeda.BRL, // Definir moeda padrão
+                            usuarioId = nomeUsuario // Definir usuário padrão
+                        };
+
+                    // Adicionar a nova conta à lista de contas a pagar
+                    contasReceber.Add(lancamentorecebimento);
+                }
+            }
+
+            try
+            {
+                await contaPagarService.SaveContasPagarAsync(contasPagar);
+                await contaReceberService.SaveContasReceberAsync(contasReceber);
+            }
+            catch (Exception ex)
+            {
+                // Lide com exceções, se necessário
+                Console.WriteLine($"Erro ao salvar dados no banco de dados: {ex.Message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Lide com exceções, se necessário
+            Console.WriteLine($"Erro ao processar o arquivo: {ex.Message}");
+        }
+    }
+
+
+}
+
+

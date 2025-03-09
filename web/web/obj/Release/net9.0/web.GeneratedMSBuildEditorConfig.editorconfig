@@ -1,0 +1,334 @@
+is_global = true
+build_property.MudDebugAnalyzer = 
+build_property.MudAllowedAttributePattern = 
+build_property.MudIllegalParameters = 
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = web
+build_property.RootNamespace = web
+build_property.ProjectDir = /Users/cristianopimenta/Documents/GitHub/otmz/web/web/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/cristianopimenta/Documents/GitHub/otmz/web/web
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Mobile/Estados/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = 
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Nb2JpbGUvRXN0YWRvcy9MaXN0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Compartilhados/RedirectToLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Db21wYXJ0aWxoYWRvcy9SZWRpcmVjdFRvTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Compartilhados/Topopadrao.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Db21wYXJ0aWxoYWRvcy9Ub3BvcGFkcmFvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Areacomum/Areacomum.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9BcmVhY29tdW0vQXJlYWNvbXVtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Animais/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvQW5pbWFpcy9MaXN0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Cadastros.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvQ2FkYXN0cm9zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Empresas/Empresa.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvRW1wcmVzYXMvRW1wcmVzYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Empresas/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvRW1wcmVzYXMvTGlzdGEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Imoveis/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvSW1vdmVpcy9MaXN0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Imoveis/ListaImovelVertical.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvSW1vdmVpcy9MaXN0YUltb3ZlbFZlcnRpY2FsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Imoveis/RegistroImovel.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvSW1vdmVpcy9SZWdpc3Ryb0ltb3ZlbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Imoveis/RegistroImovelVertical.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvSW1vdmVpcy9SZWdpc3Ryb0ltb3ZlbFZlcnRpY2FsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Localidades/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvTG9jYWxpZGFkZXMvTGlzdGEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/OcorrenciasInternas/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvT2NvcnJlbmNpYXNJbnRlcm5hcy9MaXN0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Pessoas/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvUGVzc29hcy9MaXN0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Pessoas/ListaComImoveisPermanete.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvUGVzc29hcy9MaXN0YUNvbUltb3ZlaXNQZXJtYW5ldGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Cadastros/Pessoas/Pessoa.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DYWRhc3Ryb3MvUGVzc29hcy9QZXNzb2EucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Clube/Clube.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DbHViZS9DbHViZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Clube/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DbHViZS9MaXN0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Comunicacao/Comunicacao.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Db211bmljYWNhby9Db211bmljYWNhby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Db3VudGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9EYXNoYm9hcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/ControlID/ConfigurarControlID.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvQ29udHJvbElEL0NvbmZpZ3VyYXJDb250cm9sSUQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/ControlID/DetalheControlID.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvQ29udHJvbElEL0RldGFsaGVDb250cm9sSUQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/CreateEquipamento.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvQ3JlYXRlRXF1aXBhbWVudG8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/CreateEquipamentoDestino.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvQ3JlYXRlRXF1aXBhbWVudG9EZXN0aW5vLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/EditEquipamento.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvRWRpdEVxdWlwYW1lbnRvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/EditEquipamentoDestino.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvRWRpdEVxdWlwYW1lbnRvRGVzdGluby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/Hikivision/ConfigurarHikivision.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvSGlraXZpc2lvbi9Db25maWd1cmFySGlraXZpc2lvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/Hikivision/DetalheHikivision.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvSGlraXZpc2lvbi9EZXRhbGhlSGlraXZpc2lvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/Iot.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvSW90LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvTGlzdGEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/ListaEquipamentoDestino.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvTGlzdGFFcXVpcGFtZW50b0Rlc3Rpbm8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/Tsplus/ConfigurarTsPlus.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvVHNwbHVzL0NvbmZpZ3VyYXJUc1BsdXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Equipamentos/Tsplus/DetalheTsPlus.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcXVpcGFtZW50b3MvVHNwbHVzL0RldGFsaGVUc1BsdXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcnJvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/conciliacaobancaria/ConciliacaoBancaria.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL2NvbmNpbGlhY2FvYmFuY2FyaWEvQ29uY2lsaWFjYW9CYW5jYXJpYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/contaspagar/EditarContaPagar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL2NvbnRhc3BhZ2FyL0VkaXRhckNvbnRhUGFnYXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/contaspagar/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL2NvbnRhc3BhZ2FyL0xpc3RhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/contasreceber/EditContaReceber.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL2NvbnRhc3JlY2ViZXIvRWRpdENvbnRhUmVjZWJlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/contasreceber/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL2NvbnRhc3JlY2ViZXIvTGlzdGEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/Financeiro.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL0ZpbmFuY2Vpcm8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/fornecedores/CreateFornecedor.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL2Zvcm5lY2Vkb3Jlcy9DcmVhdGVGb3JuZWNlZG9yLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/fornecedores/EditFornecedor.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL2Zvcm5lY2Vkb3Jlcy9FZGl0Rm9ybmVjZWRvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/fornecedores/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL2Zvcm5lY2Vkb3Jlcy9MaXN0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/planocontas/Cadastro.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL3BsYW5vY29udGFzL0NhZGFzdHJvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/planocontas/ListaPlanoContas.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL3BsYW5vY29udGFzL0xpc3RhUGxhbm9Db250YXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/relatorio/Der.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL3JlbGF0b3Jpby9EZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Financeiro/relatorio/RelatorioFinanceiro.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9GaW5hbmNlaXJvL3JlbGF0b3Jpby9SZWxhdG9yaW9GaW5hbmNlaXJvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ib21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/HomeGit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ib21lR2l0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Login/CreateUsuario.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Mb2dpbi9DcmVhdGVVc3VhcmlvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Login/ListaUsuarios.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Mb2dpbi9MaXN0YVVzdWFyaW9zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Login/LoginAcesso.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Mb2dpbi9Mb2dpbkFjZXNzby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Mobile/Cidades/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Nb2JpbGUvQ2lkYWRlcy9MaXN0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Mobile/Condominios/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Nb2JpbGUvQ29uZG9taW5pb3MvTGlzdGEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Mobile/Estados/CadastroEstado.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Nb2JpbGUvRXN0YWRvcy9DYWRhc3Ryb0VzdGFkby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Mobile/Estados/EditarEstadoDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Nb2JpbGUvRXN0YWRvcy9FZGl0YXJFc3RhZG9EaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Mobile/Mobile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Nb2JpbGUvTW9iaWxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Mobile/Modulos/CadastroModulo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Nb2JpbGUvTW9kdWxvcy9DYWRhc3Ryb01vZHVsby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Mobile/Modulos/EditarModuloDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Nb2JpbGUvTW9kdWxvcy9FZGl0YXJNb2R1bG9EaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Mobile/Modulos/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Nb2JpbGUvTW9kdWxvcy9MaXN0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Panico/Panico.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9QYW5pY28vUGFuaWNvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Portaria/CreatePortaria.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Qb3J0YXJpYS9DcmVhdGVQb3J0YXJpYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Portaria/EditPortaria.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Qb3J0YXJpYS9FZGl0UG9ydGFyaWEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Portaria/Lista.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Qb3J0YXJpYS9MaXN0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Relatorios/Relatorios.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9SZWxhdG9yaW9zL1JlbGF0b3Jpb3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Sistemas/Backup.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9TaXN0ZW1hcy9CYWNrdXAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Sistemas/Condominio.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9TaXN0ZW1hcy9Db25kb21pbmlvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Sistemas/Sistemas.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9TaXN0ZW1hcy9TaXN0ZW1hcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Suporte/Suporte.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9TdXBvcnRlL1N1cG9ydGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Pages/Weather.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9XZWF0aGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Sb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/cristianopimenta/Documents/GitHub/otmz/web/web/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9fSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 

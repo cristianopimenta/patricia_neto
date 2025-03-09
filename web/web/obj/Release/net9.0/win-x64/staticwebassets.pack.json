@@ -1,0 +1,353 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/css/modelo.css",
+      "PackagePath": "staticwebassets/css/modelo.css"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/favicon.ico",
+      "PackagePath": "staticwebassets/favicon.ico"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/HELP-US-OUT.txt",
+      "PackagePath": "staticwebassets/fontawesome/HELP-US-OUT.txt"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/css/font-awesome.css",
+      "PackagePath": "staticwebassets/fontawesome/css/font-awesome.css"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/css/font-awesome.min.css",
+      "PackagePath": "staticwebassets/fontawesome/css/font-awesome.min.css"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/fonts/FontAwesome.otf",
+      "PackagePath": "staticwebassets/fontawesome/fonts/FontAwesome.otf"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/fonts/fontawesome-webfont.eot",
+      "PackagePath": "staticwebassets/fontawesome/fonts/fontawesome-webfont.eot"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/fonts/fontawesome-webfont.svg",
+      "PackagePath": "staticwebassets/fontawesome/fonts/fontawesome-webfont.svg"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/fonts/fontawesome-webfont.ttf",
+      "PackagePath": "staticwebassets/fontawesome/fonts/fontawesome-webfont.ttf"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/fonts/fontawesome-webfont.woff",
+      "PackagePath": "staticwebassets/fontawesome/fonts/fontawesome-webfont.woff"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/fonts/fontawesome-webfont.woff2",
+      "PackagePath": "staticwebassets/fontawesome/fonts/fontawesome-webfont.woff2"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/animated.less",
+      "PackagePath": "staticwebassets/fontawesome/less/animated.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/bordered-pulled.less",
+      "PackagePath": "staticwebassets/fontawesome/less/bordered-pulled.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/core.less",
+      "PackagePath": "staticwebassets/fontawesome/less/core.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/fixed-width.less",
+      "PackagePath": "staticwebassets/fontawesome/less/fixed-width.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/font-awesome.less",
+      "PackagePath": "staticwebassets/fontawesome/less/font-awesome.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/icons.less",
+      "PackagePath": "staticwebassets/fontawesome/less/icons.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/larger.less",
+      "PackagePath": "staticwebassets/fontawesome/less/larger.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/list.less",
+      "PackagePath": "staticwebassets/fontawesome/less/list.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/mixins.less",
+      "PackagePath": "staticwebassets/fontawesome/less/mixins.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/path.less",
+      "PackagePath": "staticwebassets/fontawesome/less/path.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/rotated-flipped.less",
+      "PackagePath": "staticwebassets/fontawesome/less/rotated-flipped.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/screen-reader.less",
+      "PackagePath": "staticwebassets/fontawesome/less/screen-reader.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/stacked.less",
+      "PackagePath": "staticwebassets/fontawesome/less/stacked.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/less/variables.less",
+      "PackagePath": "staticwebassets/fontawesome/less/variables.less"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_animated.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_animated.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_bordered-pulled.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_bordered-pulled.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_core.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_core.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_fixed-width.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_fixed-width.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_icons.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_icons.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_larger.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_larger.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_list.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_list.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_mixins.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_mixins.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_path.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_path.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_rotated-flipped.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_rotated-flipped.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_screen-reader.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_screen-reader.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_stacked.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_stacked.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/_variables.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/_variables.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/fontawesome/scss/font-awesome.scss",
+      "PackagePath": "staticwebassets/fontawesome/scss/font-awesome.scss"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/gitimagem/logoblgitaccess.png",
+      "PackagePath": "staticwebassets/gitimagem/logoblgitaccess.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/gitimagem/logogitaccess.png",
+      "PackagePath": "staticwebassets/gitimagem/logogitaccess.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/FundoTelaPortal.png",
+      "PackagePath": "staticwebassets/imagem/FundoTelaPortal.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/controlid.png",
+      "PackagePath": "staticwebassets/imagem/controlid.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/fundolaranja.png",
+      "PackagePath": "staticwebassets/imagem/fundolaranja.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/fundotopotelaportal.svg",
+      "PackagePath": "staticwebassets/imagem/fundotopotelaportal.svg"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/hikivision.png",
+      "PackagePath": "staticwebassets/imagem/hikivision.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/hikvision.jpeg",
+      "PackagePath": "staticwebassets/imagem/hikvision.jpeg"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/academia.png",
+      "PackagePath": "staticwebassets/imagem/icones/academia.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/animais.png",
+      "PackagePath": "staticwebassets/imagem/icones/animais.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/areacomum.png",
+      "PackagePath": "staticwebassets/imagem/icones/areacomum.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/cadastros.png",
+      "PackagePath": "staticwebassets/imagem/icones/cadastros.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/clube.png",
+      "PackagePath": "staticwebassets/imagem/icones/clube.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/comunicacao.png",
+      "PackagePath": "staticwebassets/imagem/icones/comunicacao.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/comunicacao1.png",
+      "PackagePath": "staticwebassets/imagem/icones/comunicacao1.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/empresas.png",
+      "PackagePath": "staticwebassets/imagem/icones/empresas.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/financeiro.png",
+      "PackagePath": "staticwebassets/imagem/icones/financeiro.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/imoveis.png",
+      "PackagePath": "staticwebassets/imagem/icones/imoveis.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/imoveis_colorido.png",
+      "PackagePath": "staticwebassets/imagem/icones/imoveis_colorido.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/localidades.png",
+      "PackagePath": "staticwebassets/imagem/icones/localidades.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/localidades_coloridos.png",
+      "PackagePath": "staticwebassets/imagem/icones/localidades_coloridos.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/mobile.png",
+      "PackagePath": "staticwebassets/imagem/icones/mobile.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/moradores.png",
+      "PackagePath": "staticwebassets/imagem/icones/moradores.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/panico.png",
+      "PackagePath": "staticwebassets/imagem/icones/panico.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/permanentes.png",
+      "PackagePath": "staticwebassets/imagem/icones/permanentes.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/permanentes_colorido.png",
+      "PackagePath": "staticwebassets/imagem/icones/permanentes_colorido.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/pilates.png",
+      "PackagePath": "staticwebassets/imagem/icones/pilates.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/portal.png",
+      "PackagePath": "staticwebassets/imagem/icones/portal.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/portaria.png",
+      "PackagePath": "staticwebassets/imagem/icones/portaria.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/relatorio.png",
+      "PackagePath": "staticwebassets/imagem/icones/relatorio.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/sistema.png",
+      "PackagePath": "staticwebassets/imagem/icones/sistema.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/suporte.png",
+      "PackagePath": "staticwebassets/imagem/icones/suporte.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/temporario.png",
+      "PackagePath": "staticwebassets/imagem/icones/temporario.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/temporario_colorido.png",
+      "PackagePath": "staticwebassets/imagem/icones/temporario_colorido.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/icones/veiculos.png",
+      "PackagePath": "staticwebassets/imagem/icones/veiculos.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/logo.svg",
+      "PackagePath": "staticwebassets/imagem/logo.svg"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/logobioacesso.png",
+      "PackagePath": "staticwebassets/imagem/logobioacesso.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/logogitaccess.png",
+      "PackagePath": "staticwebassets/imagem/logogitaccess.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/logootmz.png",
+      "PackagePath": "staticwebassets/imagem/logootmz.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/logotipo.png",
+      "PackagePath": "staticwebassets/imagem/logotipo.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagem/placats.png",
+      "PackagePath": "staticwebassets/imagem/placats.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/imagens/scqt24kn.qgo.png",
+      "PackagePath": "staticwebassets/imagens/scqt24kn.qgo.png"
+    },
+    {
+      "Id": "/Users/cristianopimenta/Documents/GitHub/otmz/web/web/wwwroot/logocondominio/d0mkwems.eeh.png",
+      "PackagePath": "staticwebassets/logocondominio/d0mkwems.eeh.png"
+    },
+    {
+      "Id": "obj/Release/net9.0/win-x64/staticwebassets/msbuild.build.web.props",
+      "PackagePath": "build\\web.props"
+    },
+    {
+      "Id": "obj/Release/net9.0/win-x64/staticwebassets/msbuild.buildMultiTargeting.web.props",
+      "PackagePath": "buildMultiTargeting\\web.props"
+    },
+    {
+      "Id": "obj/Release/net9.0/win-x64/staticwebassets/msbuild.buildTransitive.web.props",
+      "PackagePath": "buildTransitive\\web.props"
+    },
+    {
+      "Id": "obj/Release/net9.0/win-x64/staticwebassets/msbuild.web.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Release/net9.0/win-x64/staticwebassets/msbuild.web.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

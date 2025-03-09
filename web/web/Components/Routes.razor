@@ -1,0 +1,26 @@
+﻿
+
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)">
+            <Authorizing>
+                <h1>Autorizando o usuário...</h1>
+            </Authorizing>
+            <NotAuthorized>
+                <RedirectToLogin />
+            </NotAuthorized>
+        </AuthorizeRouteView>
+
+        <!-- Adicionando foco ao título da página ao navegar -->
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+
+    <NotFound>
+        <CascadingAuthenticationState>
+            <LayoutView Layout="@typeof(Layout.MainLayout)">
+                <h1>Página não encontrada</h1>
+                <p>O recurso solicitado não existe.</p>
+            </LayoutView>
+        </CascadingAuthenticationState>
+    </NotFound>
+</Router>

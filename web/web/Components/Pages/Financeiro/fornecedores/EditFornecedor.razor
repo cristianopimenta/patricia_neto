@@ -1,0 +1,48 @@
+﻿@page "/financeiro/fornecedores/edit/{id:int}"
+@inject FornecedorService FornecedorService
+@inject NavigationManager Navigation
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h4" Class="mb-4">Editar Fornecedor</MudText>
+
+    <EditForm Model="fornecedor" OnValidSubmit="HandleValidSubmit">
+        <MudTextField @bind-Value="fornecedor.Nome" Label="Nome" Required="true" Class="mb-4" />
+        <MudTextField @bind-Value="fornecedor.CNPJ" Label="CNPJ" Class="mb-4" />
+        <MudTextField @bind-Value="fornecedor.Endereco" Label="Endereço" Class="mb-4" />
+        <MudTextField @bind-Value="fornecedor.Telefone" Label="Telefone" Class="mb-4" />
+        <MudTextField @bind-Value="fornecedor.Email" Label="Email" Class="mb-4" />
+        <MudTextField @bind-Value="fornecedor.Observacoes" Label="Observações" Multiline="true" Lines="3" Class="mb-4" />
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="submit" OnClick="()=>HandleValidSubmit()" Class="mt-4">
+            Salvar
+        </MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="() => Fornecedor()" Class="mt-4 ml-2">
+            Cancelar
+        </MudButton>
+    </EditForm>
+</MudContainer>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private FornecedorModel fornecedor = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        fornecedor = await FornecedorService.GetFornecedorByIdAsync(Id) ?? new();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await FornecedorService.UpdateFornecedorAsync(fornecedor);
+        Navigation.NavigateTo("/financeiro/fornecedores/lista");
+    }
+
+    private void Fornecedor(){
+        Navigation.NavigateTo("/financeiro/fornecedores/lista");
+    }
+}

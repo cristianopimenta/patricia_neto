@@ -1,0 +1,35 @@
+@using MudBlazor
+
+<MudGrid Spacing="2">
+    <MudItem xs="12" md="12">
+        <MudPaper Class="d-flex align-items-center" Style="padding: 8px;">
+            <MudTextField T="string" Placeholder="Nome" Label="Buscar" Typo="Typo.input"
+                          Style="margin-left: 16px; margin-right: 16px;" @bind-Value="@SearchString">
+            </MudTextField>
+
+            <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                       StartIcon="@Icons.Material.Filled.Search" @onclick="OnSearch"
+                       Style="border-radius: 0%; width: 150px; height: 35px;">
+                Consultar
+            </MudButton>
+
+            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="OnNewRecord">
+                Novo Registro
+            </MudButton>
+
+            <MudButton Color="Color.Error" Variant="Variant.Filled" Class="ml-12"
+                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="OnBack">
+                Voltar
+            </MudButton>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Parameter] public string SearchString { get; set; }
+    [Parameter] public EventCallback OnSearch { get; set; }
+    [Parameter] public EventCallback OnNewRecord { get; set; }
+    [Parameter] public EventCallback OnBack { get; set; }
+}

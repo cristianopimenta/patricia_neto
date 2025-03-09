@@ -1,0 +1,39 @@
+using MudBlazor;
+
+
+    
+namespace webweb.Controller.Helper;
+
+public class PessoaContatoServiceHelper
+{
+    private readonly IPessoaContato _pessoaContatoService;
+    private readonly IList<MudMessage> _mensagem;
+
+    public PessoaContatoServiceHelper(IPessoaContato pessoaContatoService, IList<MudMessage> mensagem)
+    {
+        _pessoaContatoService = pessoaContatoService;
+        _mensagem = mensagem;
+    }
+
+    public PessoaContato InicializarPessoaContato(string cpfPessoa)
+    {
+        return new PessoaContato(cpfPessoa: cpfPessoa); // Inicializa com valores padrões
+    }
+
+    public async Task<IEnumerable<PessoaContato>> ObterPessoaContato(string cpfPessoa)
+    {
+        if (string.IsNullOrEmpty(cpfPessoa))
+        {
+        //    _mensagem.Add(new MudMessage("Documento único não fornecido.", Severity.Error));
+            return Enumerable.Empty<PessoaContato>();
+        }
+
+        return await _pessoaContatoService.GetContatoUnico(cpfPessoa);
+    }
+
+    public async Task SalvarContato(PessoaContato pessoaContato)
+    {
+        await _pessoaContatoService.SalvarRegistroContato(pessoaContato);
+       // _mensagem.Add(new MudMessage("Contato cadastrado com sucesso!", Severity.Success));
+    }
+}

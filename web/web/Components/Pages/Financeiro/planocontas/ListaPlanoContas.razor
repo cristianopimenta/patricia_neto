@@ -1,0 +1,207 @@
+﻿@page "/financeiro/planocontas/listaplanocontas"
+
+@using MudBlazor
+@using static MudBlazor.CategoryTypes
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+@inject IPlanoConta interfacePlanoContas
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudGrid style="position: relative;  padding: 50px;">
+    <MudItem xs="12">
+        <MudPaper Class="d-flex align-items-center justify-content-between"
+                  Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+            <div class="d-flex align-items-center">
+                <MudIcon Icon="@Icons.Material.Filled.House" Color="Color.Warning" Size="Size.Large" />
+                <MudText Class="ml-2" Typo="Typo.h4" Color="@Color.Warning">Lista de plano contas</MudText>
+            </div>
+
+        </MudPaper>
+    </MudItem>
+
+</MudGrid>
+
+<MudGrid Spacing="2">
+    <MudItem xs="12" md="12">
+        <MudPaper Class="d-flex align-items-center" Style="padding: 8px;">
+
+
+            <MudTextField T="string" Placeholder="Informe a Quadra ou Lote ou Logradouro" Label="Buscar" Typo="Typo.input"
+                          Style="margin-left: 16px; margin-right: 16px;" @bind-Value="searchString"></MudTextField>
+
+            <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                       StartIcon="@Icons.Material.Filled.Search" @onclick="Pesquisar"
+                       Style="border-radius: 0%; width: 150px; height: 35px;">
+                Consultar
+            </MudButton>
+            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="NovoRegistro">
+                Novo Registro
+            </MudButton>
+            <MudButton Color="Color.Error" Variant="Variant.Filled" Class="ml-12"
+                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="Voltar">
+
+            </MudButton>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
+<MudContainer Class="mt-4">
+    <MudPaper Class="pa-4">
+        <MudGrid>
+            <MudItem xs="12">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AdicionarPlanoConta">Novo Plano de Conta</MudButton>
+            </MudItem>
+            <MudItem xs="12">
+                <MudTable Elevation="25" Items="_listaplanoContas" Filter="new Func<PlanoContaModel, bool>(Search)" @bind-bio="_currentPlanoConta">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Lista de plano de contas </MudText>
+                     
+                        <MudTextField @bind-Value="searchString" Placeholder="Procurar plano conta..." Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+
+                    <HeaderContent>
+                        <MudTh>Id</MudTh>
+                        <MudTh>Descrição</MudTh>
+                        <MudTd>Ações</MudTd> 
+
+                    </HeaderContent>
+                    <RowTemplate>
+
+                        <MudTd DataLabel="Cód.">@context.Id</MudTd>
+                        <MudTd DataLabel="Descricao">@context.Descricao</MudTd>
+
+
+                        <MudTd DataLabel="Ações">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => EditarPlanoConta(context)" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => ExcluirPlanoConta(context.Id)" />
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <MudDialog @bind-IsVisible="_isDialogOpen" MaxWidth="500px">
+        <DialogContent>
+            <MudText Typo="Typo.h6">@(_isEditMode ? "Editar Plano de Conta" : "Novo Plano de Conta")</MudText>
+            <MudForm @ref="_form" OnValidSubmit="SalvarPlanoConta">
+                <MudTextField @bind-Value="_currentPlanoConta.CodigoPlanoContas" Label="Código do Plano de Contas" Required="true" />
+                <MudTextField @bind-Value="_currentPlanoConta.Descricao" Label="Descrição" Required="true" />
+
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit">Salvar</MudButton>
+                <MudButton Variant="Variant.Filled" OnClick="FecharDialog">Cancelar</MudButton>
+            </MudForm>
+        </DialogContent>
+    </MudDialog>
+</MudContainer>
+
+@code {
+    private List<PlanoContaModel> _planoContas = new();
+    private IEnumerable<PlanoContaModel> _listaplanoContas = new List<PlanoContaModel>();
+    private PlanoContaModel _currentPlanoConta = new();
+    private bool _isDialogOpen = false;
+    private bool _isEditMode = false;
+    private MudForm _form;
+
+    private string searchString = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate fetching data from database
+
+        await GetPlanoContas();
+    }
+
+    private void AdicionarPlanoConta()
+    {
+        _currentPlanoConta = new PlanoContaModel();
+        _isEditMode = false;
+        _isDialogOpen = true;
+
+        Navigation.NavigateTo("/financeiro/planocontas/cadastro");
+    }
+
+    private async Task EditarPlanoConta(PlanoContaModel planoConta)
+    {
+        _currentPlanoConta = new PlanoContaModel
+            {
+                Id = planoConta.Id,
+                CodigoPlanoContas = planoConta.CodigoPlanoContas,
+                Descricao = planoConta.Descricao,
+                usuarioId = planoConta.usuarioId
+            };
+        _isEditMode = true;
+        _isDialogOpen = true;
+    }
+
+    private void SalvarPlanoConta()
+    {
+        if (_isEditMode)
+        {
+            // Update existing PlanoConta
+            var item = _planoContas.FirstOrDefault(p => p.Id == _currentPlanoConta.Id);
+            if (item != null)
+            {
+                item.CodigoPlanoContas = _currentPlanoConta.CodigoPlanoContas;
+                item.Descricao = _currentPlanoConta.Descricao;
+            }
+        }
+        else
+        {
+            // Add new PlanoConta
+            _currentPlanoConta.Id = _planoContas.Count + 1;
+            _planoContas.Add(_currentPlanoConta);
+        }
+
+        Snackbar.Add(_isEditMode ? "Plano de Conta atualizado com sucesso!" : "Novo Plano de Conta adicionado!", Severity.Success);
+        FecharDialog();
+    }
+
+    private async Task ExcluirPlanoConta(int id)
+    {
+        await interfacePlanoContas.DeleteRegistro(id);
+            Snackbar.Add("Plano de Conta excluído com sucesso!", Severity.Warning);
+        await GetPlanoContas();
+        
+    }
+
+    private void FecharDialog()
+    {
+        _isDialogOpen = false;
+        _currentPlanoConta = new PlanoContaModel();
+    }
+
+    private async Task<IEnumerable<PlanoContaModel>> GetPlanoContas()
+    {
+        _listaplanoContas = await interfacePlanoContas.GetRegistro();
+        return _listaplanoContas;
+    }
+
+    private bool Search(PlanoContaModel planoconta)
+    {
+        if (string.IsNullOrWhiteSpace(searchString)) return true;
+        if (planoconta.Descricao.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+        return false;
+    }
+    private void Voltar()
+    {
+        Navigation.NavigateTo("/financeiro");
+    }
+    private void Pesquisar()
+    {
+        StateHasChanged();
+    }
+    private async Task NovoRegistro()
+    {
+        Navigation.NavigateTo("/financeiro/planocontas/cadastro");
+    }
+}

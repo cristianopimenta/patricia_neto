@@ -1,0 +1,106 @@
+﻿@page "/financeiro/planocontas/cadastro"
+@page "/financeiro/planocontas/cadastro{id:int}"
+
+@inject IPlanoConta iplanoconta
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudGrid style="position: relative; padding: 15px;">
+    <MudItem xs="12">
+        <MudPaper Class="d-flex align-items-center justify-content-between"
+                  Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+            <div class="d-flex align-items-center">
+                <MudIcon Icon="@Icons.Material.Filled.Payment" Color="Color.Warning" Size="Size.Large" />
+                <MudText Typo="Typo.h4" GutterBottom="true" Color="Color.Warning">@(_isEdit ? "Editar Plano de Contas" : "Cadastro de Plano de Contas")</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+<MudDivider />
+<br />
+
+<MudPaper Elevation="3" Class="pa-4">
+    <MudGrid>
+        <MudCard>
+            <MudCardContent>
+                 <MudItem xs="12" md="8">
+                <MudTextField @bind-Value="_planoConta.CodigoPlanoContas" Label="Código do Plano de Contas" Required="true" />
+                </MudItem>
+                <MudItem xs="12" md="8">
+                <MudTextField @bind-Value="_planoConta.Descricao" Label="Descrição" Required="true" />
+                </MudItem>
+                <MudItem xs="12" md="8">
+                <MudSelect T="TipoPlano?" @bind-Value="_planoConta.TipoPlanos" Label="Tipo Plano" Required="true">
+                    @foreach (var tipo in Enum.GetValues(typeof(TipoPlano)).Cast<TipoPlano>())
+                    {
+                        <MudSelectItem T="TipoPlano?" Value="@(tipo)">@GetEnumDescription(tipo)</MudSelectItem>
+                    }
+                </MudSelect>
+                </MudItem>
+            </MudCardContent>
+        </MudCard>
+        <MudItem xs="12" md="8">
+            <MudButton OnClick="Salvar" Color="Color.Primary" Variant="Variant.Filled">Salvar</MudButton>
+            <MudButton OnClick="Cancelar" Color="Color.Secondary" Variant="Variant.Text" Class="ml-2">Cancelar</MudButton>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    private MudForm form;
+    private PlanoContaModel _planoConta = new PlanoContaModel();
+    private string nomeUsuario;
+    private bool _isEdit;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private async Task Salvar()
+    {
+        _planoConta.usuarioId = nomeUsuario;
+
+        if (_isEdit)
+        {
+            await iplanoconta.SalvarRegistroEdicao(_planoConta); // Atualiza a conta existente
+        }
+        else
+        {
+            await iplanoconta.SalvarRegistro(_planoConta); // Adiciona uma nova conta
+        }
+
+        Snackbar.Add("Plano de Conta cadastrado com sucesso!", Severity.Success);
+        Navigation.NavigateTo("financeiro/planocontas/listaplanocontas");
+    }
+
+    private void Cancelar()
+    {
+        Navigation.NavigateTo("/financeiro/planocontas/listaplanocontas");
+    }
+
+    private string GetEnumDescription(TipoPlano value)
+    {
+        var field = value.GetType().GetField(value.ToString());
+        var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
+        return attribute == null ? value.ToString() : attribute.Description;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            nomeUsuario = user.Identity.Name;
+        }
+
+        _isEdit = Id > 0;
+        if (_isEdit)
+        {
+            _planoConta = await iplanoconta.GetRegistroById(Id);
+        }
+    }
+}

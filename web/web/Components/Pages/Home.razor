@@ -1,0 +1,139 @@
+﻿@page "/"
+@using MudBlazor
+@using MudBlazor.Components
+@using web.Components.Layout
+@layout MainLayout
+@using static MudBlazor.Icons.Material
+
+@rendermode InteractiveServer
+@inject MudBlazor.ISnackbar snackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>OTMZ</PageTitle>
+<AuthorizeView>
+    <Authorized>
+        <MudContainer>
+            <MudGrid>
+                <MudItem xs="12" sm="12" md="4">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6">Movimento Clientes </MudText>
+                            <div>
+                                <MudChart ChartType="ChartType.Line" ChartSeries="@Clientes" @bind-SelectedIndex="Index"
+                                          LegendPosition="@LegendPosition" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+
+                <MudItem xs="12" sm="12" md="4">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6">Movimento Financeiro </MudText>
+                            <div>
+                                <MudChart ChartType="ChartType.StackedBar" ChartSeries="@Financeiro" @bind-SelectedIndex="Index" 
+                                          LegendPosition="@LegendPosition" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
+                            </div>
+                            
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+
+                <MudItem xs="12" sm="12" md="4">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6">Compras x Produto x Fornecedor</MudText>
+                            <div>
+                                <MudChart ChartType="ChartType.Bar" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
+                            </div>
+
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+
+                <MudItem xs="12">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6">Check List de novos projetos</MudText>
+                            <MudTable Items="_ultimasSolicitacoes">
+                                <HeaderContent>
+                                    <MudTh>Data</MudTh>
+                                    <MudTh>Usuário</MudTh>
+                                    <MudTh>Solicitação</MudTh>
+                                </HeaderContent>
+                                <RowTemplate Context="solicitacao">
+                                    <MudTd DataLabel="Data">@solicitacao.Data.ToShortDateString()</MudTd>
+                                    <MudTd DataLabel="Usuario">@solicitacao.Morador</MudTd>
+                                    <MudTd DataLabel="Solicitação">@solicitacao.Descricao</MudTd>
+                                </RowTemplate>
+                            </MudTable>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </Authorized>
+
+    <NotAuthorized>
+        <MudContainer Class="full-height d-flex align-center justify-center">
+            <MudPaper Class="text-center p-6 elevation-4 d-flex flex-column align-center" Style="max-width: 600px; border-radius: 20px;">
+                <h2 class="mb-2">Seja bem-vindo</h2>
+                <h4 class="mb-4">Efetue sua autenticação</h4>
+                <br /><br />
+                <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="Login"
+                           Style="width: 400px; padding: 12px; border-radius: 8px;">
+                    <MudImage Src="/imagem/icones/portaria.png" Alt="Portaria" Width="30" Height="30" Class="mr-2" />
+                    <span><strong>Acessar OTMZ</strong></span>
+                </MudButton>
+            </MudPaper>
+        </MudContainer>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private Position LegendPosition = Position.Bottom;
+    
+    private List<Solicitacao> _ultimasSolicitacoes = new List<Solicitacao>
+    {
+        new Solicitacao { Data = DateTime.Now.AddDays(-1), Morador = "João", Descricao = "Reparo no encanamento" },
+        new Solicitacao { Data = DateTime.Now.AddDays(-2), Morador = "Maria", Descricao = "Troca de lâmpada" },
+        new Solicitacao { Data = DateTime.Now.AddDays(-3), Morador = "Carlos", Descricao = "Problema com o portão" }
+    };
+
+    private class Solicitacao
+    {
+        public DateTime Data { get; set; }
+        public string Morador { get; set; }
+        public string Descricao { get; set; }
+    }
+
+    private void Login()
+    {
+        Navigation.NavigateTo("/login/loginacesso");
+    }
+    
+    private int Index = 1; //default value cannot be 0 -> first selectedindex is 0.
+
+    public List<ChartSeries> Series = new List<ChartSeries>()
+    {
+        new ChartSeries() { Name = "Produto", Data = new double[] { 40, 20, 25, 27, 46, 60, 48, 80, 15 } },
+        new ChartSeries() { Name = "Fornecedor", Data = new double[] { 19, 24, 35, 13, 28, 15, 13, 16, 31 } },
+        new ChartSeries() { Name = "Menor Custo", Data = new double[] { 8, 6, 11, 13, 4, 16, 10, 16, 18 } },
+    };
+    public string[] XAxisLabels = { "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Sept" };
+    
+    public List<ChartSeries> Financeiro = new List<ChartSeries>()
+    {
+        new ChartSeries() { Name = "Debito", Data = new double[] { 40, 20, 25, 27, 46, 60, 48, 80, 15 } },
+        new ChartSeries() { Name = "Credito", Data = new double[] { 19, 24, 35, 13, 28, 15, 13, 16, 31 } },
+        new ChartSeries() { Name = "Saldo", Data = new double[] { 8, 6, 11, 13, 4, 16, 10, 16, 18 } },
+    };
+    
+    public List<ChartSeries> Clientes = new List<ChartSeries>()
+    {
+        new ChartSeries() { Name = "Novos Clientes", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
+        new ChartSeries() { Name = "Clinetes Concluidos", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
+    };
+}

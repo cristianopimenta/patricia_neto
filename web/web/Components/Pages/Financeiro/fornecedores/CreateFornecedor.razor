@@ -1,0 +1,40 @@
+﻿@page "/financeiro/fornecedores/createfornecedor"
+@inject FornecedorService FornecedorService
+@inject NavigationManager Navigation
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h4" Class="mb-4">Criar Novo Fornecedor</MudText>
+
+    <EditForm Model="@novoFornecedor" OnValidSubmit="HandleValidSubmit">
+        <MudTextField @bind-Value="novoFornecedor.Nome" Label="Nome" Required="true" Class="mb-4" />
+        <MudTextField @bind-Value="novoFornecedor.CNPJ" Label="CNPJ" Class="mb-4" />
+        <MudTextField @bind-Value="novoFornecedor.Endereco" Label="Endereço" Class="mb-4" />
+        <MudTextField @bind-Value="novoFornecedor.Telefone" Label="Telefone" Class="mb-4" />
+        <MudTextField @bind-Value="novoFornecedor.Email" Label="Email" Class="mb-4" />
+        <MudTextField @bind-Value="novoFornecedor.Observacoes" Label="Observações" Multiline="true" Lines="3" Class="mb-4" />
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => HandleValidSubmit()" Type="submit" Class="mt-4">
+            Salvar
+        </MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="() => Fornecedor()" Class="mt-4 ml-2">
+            Cancelar
+        </MudButton>
+    </EditForm>
+</MudContainer>
+
+@code {
+    private FornecedorModel novoFornecedor = new();
+
+    private async Task HandleValidSubmit()
+    {
+        await FornecedorService.CreateFornecedorAsync(novoFornecedor);
+        Navigation.NavigateTo("/financeiro/fornecedores/lista");
+    }
+
+    private void Fornecedor(){
+        Navigation.NavigateTo("/financeiro/fornecedores/lista");
+    }
+}

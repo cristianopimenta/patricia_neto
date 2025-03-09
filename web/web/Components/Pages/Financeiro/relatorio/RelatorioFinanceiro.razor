@@ -1,0 +1,95 @@
+﻿@page "/financeiro/relatorio/relatoriofinanceiro"
+
+@inject RelatorioService RelatorioService
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudText Typo="Typo.h4" Class="mb-4">Relatório de Contas a Receber e Pagar</MudText>
+
+    <!-- Filtros -->
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudDatePicker Label="Data Início" Date="@dataInicio" DateChanged="@OnDataInicioChanged" Required="true" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudDatePicker Label="Data Fim" Date="@dataFim" DateChanged="@OnDataFimChanged" Required="true" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudSelect T="TipoLiquidacao?" @bind-Value="statusSelecionado" Label="Status">
+                <MudSelectItem T="TipoLiquidacao?" Value="null">Todos</MudSelectItem>
+                <MudSelectItem T="TipoLiquidacao?" Value="TipoLiquidacao.Aberto">Aberto</MudSelectItem>
+                <MudSelectItem T="TipoLiquidacao?" Value="TipoLiquidacao.Vencido">Vencido</MudSelectItem>
+                <MudSelectItem T="TipoLiquidacao?" Value="TipoLiquidacao.Liquidado">Liquidado</MudSelectItem>
+                <MudSelectItem T="TipoLiquidacao?" Value="TipoLiquidacao.Baixado">Baixado</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+    </MudGrid>
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="BuscarDados" Class="mb-4">
+        Buscar
+    </MudButton>
+
+    <!-- Tabela de Contas a Receber -->
+    <MudText Typo="Typo.h5" Class="mb-4">Contas a Receber</MudText>
+    <MudTable Items="@contasReceber" Hover="true" Breakpoint="Breakpoint.None">
+        <HeaderContent>
+            <MudTh>Número Documento</MudTh>
+            <MudTh>Valor</MudTh>
+            <MudTh>Data Vencimento</MudTh>
+            <MudTh>Status</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Número Documento">@context.NumeroDocumento</MudTd>
+            <MudTd DataLabel="Valor">@context.ValorRecebimento.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR"))</MudTd>
+            <MudTd DataLabel="Data Vencimento">@context.DataVencimento?.ToShortDateString()</MudTd>
+            <MudTd DataLabel="Status">@context.StatusConta</MudTd>
+        </RowTemplate>
+    </MudTable>
+
+    <!-- Tabela de Contas a Pagar -->
+    <MudText Typo="Typo.h5" Class="mb-4">Contas a Pagar</MudText>
+    <MudTable Items="@contasPagar" Hover="true" Breakpoint="Breakpoint.None">
+        <HeaderContent>
+            <MudTh>Número Documento</MudTh>
+            <MudTh>Valor</MudTh>
+            <MudTh>Data Vencimento</MudTh>
+            <MudTh>Status</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Número Documento">@context.NumeroDocumento</MudTd>
+            <MudTd DataLabel="Valor">@context.ValorPagamento.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR"))</MudTd>
+            <MudTd DataLabel="Data Vencimento">@context.DataVencimento?.ToShortDateString()</MudTd>
+            <MudTd DataLabel="Status">@context.StatusConta</MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudContainer>
+
+@code {
+    private DateTime? dataInicio = DateTime.Now.AddMonths(-1);
+    private DateTime? dataFim = DateTime.Now;
+    private TipoLiquidacao? statusSelecionado = null;
+
+    private List<ContaReceberModel> contasReceber = new();
+    private List<ContaPagarModel> contasPagar = new();
+
+    private EventCallback<DateTime?> OnDataInicioChanged => EventCallback.Factory.Create<DateTime?>(this, (newDate) =>
+    {
+        dataInicio = newDate;
+    });
+
+    private EventCallback<DateTime?> OnDataFimChanged => EventCallback.Factory.Create<DateTime?>(this, (newDate) =>
+    {
+        dataFim = newDate;
+    });
+
+    private async Task BuscarDados()
+    {
+        if (dataInicio.HasValue && dataFim.HasValue)
+        {
+            contasReceber = await RelatorioService.BuscarContasReceberAsync(dataInicio.Value, dataFim.Value, statusSelecionado);
+            contasPagar = await RelatorioService.BuscarContasPagarAsync(dataInicio.Value, dataFim.Value, statusSelecionado);
+        }
+    }
+}

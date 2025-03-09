@@ -1,0 +1,84 @@
+﻿
+<MudNavMenu>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudDivider />
+    
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.CrisisAlert" IconColor="Color.Error">Pânico</MudNavLink>
+    <MudDivider />
+    <MudNavGroup Title="Portaria" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.DoorSliding"  Expanded="false">
+        <MudNavLink Href="">Vertical</MudNavLink>
+        <MudNavLink Href="">Horizontal</MudNavLink>
+    </MudNavGroup>
+ 
+    <MudNavGroup Title="Comunicação" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Speaker" Expanded="false">
+        <MudNavLink Href="">Reservas</MudNavLink>
+        <MudNavLink Href="">Assembleia</MudNavLink>
+        <MudNavLink Href="">Ocorrencias</MudNavLink>
+        <MudNavLink Href="">Correspondência</MudNavLink>
+        <MudNavLink Href="">Documentações / Arquivo</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Financeiro" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Payments" Expanded="false">
+        <MudNavLink Href="/financeiro/fornecedores/lista" >Fornecedores</MudNavLink>
+        <MudDivider />
+        <MudNavLink Href="/financeiro/contaspagar/lista" >Contas a Pagar</MudNavLink>
+        <MudNavLink Href="/financeiro/contasreceber/lista">Contas a Receber</MudNavLink>
+        <MudNavLink Href="">Livro Caixa</MudNavLink>
+        <MudDivider />
+        <MudNavLink Href="">Bancos</MudNavLink>
+        <MudNavLink Href="">Contas Bancarias</MudNavLink>
+        <MudDivider />
+        <MudNavLink Href="/Financeiro/planocontas/ListaPlanoContas" >Plano de Contas</MudNavLink>
+        <MudNavLink Href="">Plano de Contas SubItens</MudNavLink>
+        <MudDivider />
+        <MudNavLink Href="/financeiro/conciliacaobancaria/conciliacao-bancaria">Conciliação Bancaria</MudNavLink>
+        <MudNavLink Href="/Financeiro/relatorio/der" >DER - Demonstrativo de resultados</MudNavLink>
+        <MudNavLink Href="/Financeiro/relatorio/relatoriofinanceiro" >Resumo Financeiro</MudNavLink>
+        <MudNavLink Href="">Cobrança</MudNavLink>
+        <MudDivider />
+        <MudNavLink Href="/financeiro/conciliacaobancaria/conciliacao-bancaria">Conciliação Bancaria</MudNavLink>
+        <MudNavLink Href="">Arquivo de Remessa</MudNavLink>
+        <MudNavLink Href="">Arquivo de Retorno</MudNavLink>
+        <MudDivider />
+
+    </MudNavGroup>
+    <MudNavGroup Title="Relatórios" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Print" Expanded="false">
+        <MudNavLink Href="" >Entradas e Saídas</MudNavLink>
+        <MudNavLink Href="" >Imoveis</MudNavLink>
+        <MudNavLink Href="" >Liberações</MudNavLink>
+        <MudNavLink Href="" >Pessoas</MudNavLink>
+        <MudNavLink Href="" >Pânico</MudNavLink>
+        <MudNavLink Href="" >Academia</MudNavLink>
+        <MudNavLink Href="" >Pilates</MudNavLink>
+        <MudNavLink Href="" >Ocorrências</MudNavLink>
+        <MudNavLink Href="" >Clube</MudNavLink>
+    </MudNavGroup>
+    <MudDivider />
+    <MudNavGroup Title="Cadastros" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddCard" Expanded="false">
+        <MudNavLink Href="/Cadastros/Cadastros">Cadastros</MudNavLink>
+        <MudNavLink Href="/Cadastros/Empresas/Lista">Empresa</MudNavLink>
+        <MudNavLink Href="/Cadastros/Imoveis/Lista">Imóveis</MudNavLink>
+        <MudNavLink Href="/login/listausuarios" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.SupervisedUserCircle">Usuários</MudNavLink>
+        <MudNavLink Href="/portaria/lista" Match="NavLinkMatch.Prefix">Portarias</MudNavLink>
+        <MudNavLink Href="/equipamentos/lista/" Match="NavLinkMatch.Prefix">Equipamentos</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Bioacesso - Legado" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Speaker" Expanded="false">
+        <MudNavLink Href="/bioacessolegado/correcoes/felipetas/pessoasfelipetas">Correção Felipetas</MudNavLink>
+        <MudNavLink Href="">Entradas / Saídas</MudNavLink>
+        <MudNavLink Href="">Mensagens</MudNavLink>
+        <MudNavLink Href="">Ocorrencias</MudNavLink>
+        <MudNavLink Href="">Correspondência</MudNavLink>
+        <MudNavLink Href="">Documentações / Arquivo</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Configurações" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Settings"  Expanded="false">
+
+        <MudNavLink Href="/equipamentos/iot" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Hardware">Configurações de IoT</MudNavLink>
+    <MudNavLink Href="/equipamentos/listaequipamentodestino" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Security">Equipamentos x Portaria</MudNavLink>
+        <MudDivider />
+    <MudNavLink Href="/sistemas/backup" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Backup">Backup de Dados</MudNavLink>
+    </MudNavGroup>
+</MudNavMenu>
+
+@code {
+       
+}

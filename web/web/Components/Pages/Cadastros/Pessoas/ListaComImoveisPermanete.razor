@@ -1,0 +1,272 @@
+﻿@page "/Cadastros/Pessoas/Moradores/ListaComImoveisPermanete"
+@using web.Components.Layout
+@using web.DTO
+@layout MainLayout
+
+@inject IPessoa PessoaService
+@inject IImoveis ImovelService
+@inject IPessoaPermanente PessoaPermanenteService
+@inject MudBlazor.ISnackbar SnackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+@inject IDialogService DialogService
+@rendermode InteractiveServer
+
+
+<PageTitle>OTMZ</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+            <MudGrid style="position: relative; padding: 50px;">
+                <MudItem xs="12">
+                    <MudPaper Class="d-flex align-items-center justify-content-between"
+                              Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+                        <div class="d-flex align-items-center">
+                            <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Warning" Size="Size.Large" />
+                            <MudText Class="ml-2" Typo="Typo.h4" Color="@Color.Warning">Lista de moradores e associados</MudText>
+                        </div>
+                       
+                    </MudPaper>
+                </MudItem>
+
+            </MudGrid>
+            <MudDivider/>
+
+        <!-- Exibe o MudProgressCircular enquanto está carregando -->
+        @if (isLoading)
+        {
+            <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+        }
+
+        <MudTabs Elevation="1" Rounded="true" Style="background-color: transparent;padding: 30px;">
+            <MudTabPanel Text="Pessoas" ToolTip="Lista de pessoas">
+                <MudGrid Spacing="2">
+                    <MudItem xs="12" md="12">
+                        <MudPaper Class="d-flex align-items-center" Style="padding: 8px;">
+                            <MudSelect T="string" Label="Tipo de Consulta" HelperText="Escolha o tipo de pessoa" MultiSelection="true"
+                                       SelectedValues="@options">
+                                @foreach (var tipo in Tipobusca)
+                                {
+                                    <MudSelectItem T="string" Value="@tipo">@tipo</MudSelectItem>
+                                }
+                            </MudSelect>
+
+                            <MudTextField T="string" Placeholder="Nome" Label="Buscar" Typo="Typo.input"
+                                          Style="margin-left: 16px; margin-right: 16px;" @bind-Value="searchString"></MudTextField>
+
+                            <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                                       StartIcon="@Icons.Material.Filled.Search" Disabled="isLoading"
+                                       @onclick="Pesquisar" Style="border-radius: 0%; width: 150px; height: 35px;">
+                                @(isLoading ? "Carregando..." : "Consultar")
+                            </MudButton>
+                            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="NovoRegistro">
+                                Novo Registro
+                            </MudButton>
+                            <MudButton Color="Color.Error" Variant="Variant.Filled" Class="ml-12"
+                                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="Voltar">
+
+                            </MudButton>
+                        </MudPaper>
+                    </MudItem>
+                </MudGrid>
+
+                <MudTable T="PessoaImovelDTO" Items="listaPessoaImoveis" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" >
+                <HeaderContent>
+                        <MudTh>Código</MudTh>
+                        <MudTh>Nome</MudTh>
+                        <MudTh>Unidade</MudTh>
+                        <MudTh>Telefone</MudTh>
+                        <MudTh>Perfis</MudTh>
+                        <MudTh>Status</MudTh>
+                    </HeaderContent>
+
+                    <RowTemplate Context="_context_pessoa">
+                        <MudTd DataLabel="Código"><strong>@_context_pessoa.PessoaId</strong></MudTd>
+                        <MudTd DataLabel="Nome">@_context_pessoa.PessoaNome</MudTd>
+                        <MudTd DataLabel="Unidade"><strong>@_context_pessoa.Unidade</strong></MudTd>
+                        <MudTd DataLabel="Telefone"><strong>@_context_pessoa.Telefone</strong></MudTd>
+                        @if (_context_pessoa.Perfis == "m")
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Home" Color="Color.Success" />
+                        }
+                        else
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Info" />
+                        }
+                        
+                        <MudTd DataLabel="Status">
+                            @if (_context_pessoa.Status == "s")
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" />
+                            }
+                            else
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.Cancel" Color="Color.Error" />
+                            }
+                        </MudTd>
+                    </RowTemplate>
+
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+            </MudTabPanel>
+
+            <MudTabPanel Text="Fotos Pendentes" ToolTip="Registre a foto pendente">
+                <br /> Fotos Pendente
+            </MudTabPanel>
+
+        </MudTabs>
+
+    </Authorized>
+
+    <NotAuthorized>
+        <MudText>Você não está autorizado a visualizar esta página.</MudText>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private HashSet<string> options { get; set; } = new HashSet<string>();
+    private string[] Tipobusca = { "Ativos", "Inativos", "Unidade" };
+
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+
+    private string searchString = string.Empty; // Usaremos apenas uma string de busca
+
+    private PessoaModel selectedItem1 = null;
+    private IEnumerable<PessoaModel> listapessoas = new List<PessoaModel>();
+    private IDialogReference _dialogReference;
+
+    private bool isLoading = true; // Controle de carregamento
+
+    private IEnumerable<PessoaImovelDTO> listaPessoaImoveis = new List<PessoaImovelDTO>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadPessoas();
+            
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+    
+    private async Task LoadPessoas()
+    {
+        isLoading = true;
+        try
+        {
+            // Obtém registros de pessoas, imóveis e pessoas permanentes
+            var pessoas = await PessoaService.GetRegistro();
+            var imoveis = await ImovelService.GetRegistro();
+            var pessoasPermanentes = await PessoaPermanenteService.GetRegistro();
+
+            // Aplica filtros antes de realizar o join
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                pessoas = pessoas.Where(p => p.Nome.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (options.Contains("Ativos"))
+            {
+                pessoasPermanentes = pessoasPermanentes.Where(pp => pp.ativo == "s").ToList();
+            }
+            else if (options.Contains("Inativos"))
+            {
+                pessoasPermanentes = pessoasPermanentes.Where(pp => pp.ativo == "n").ToList();
+            }
+
+            // Realiza os joins para mapear PessoaImovelDTO
+            listaPessoaImoveis = pessoas
+                .Join(pessoasPermanentes, pessoa => pessoa.Id, pp => pp.id_pessoa,
+                    (pessoa, pp) => new { pessoa, pp })
+                .Join(imoveis, combined => combined.pp.id_imovel, imovel => imovel.Id,
+                    (combined, imovel) => new PessoaImovelDTO
+                    {
+                        PessoaId = combined.pessoa.Id,
+                        PessoaNome = combined.pessoa.Nome,
+                        Unidade = string.Concat(imovel.Lote, " ", imovel.Quadra),
+                        
+                        Perfis = combined.pessoa.Tipo, // Supondo que `tipo` seja o perfil
+                        Status = combined.pp.ativo,
+                    })
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            SnackBar.Add($"Erro ao carregar pessoas: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    
+
+    private bool Search(PessoaModel pessoa)
+    {
+        if (string.IsNullOrWhiteSpace(searchString) && options.Count == 0)
+            return true;
+
+        // Verifica se o nome ou outra propriedade contém a string de busca
+        bool matchesSearchString = !string.IsNullOrWhiteSpace(searchString) &&
+                                   pessoa.Nome?.Contains(searchString, StringComparison.OrdinalIgnoreCase) == true;
+
+        // Verifica se o tipo do morador está entre as opções selecionadas
+        bool matchesOptions = options.Count == 0 || options.Contains(pessoa.TipoMorador.ToString());
+
+        return matchesSearchString || matchesOptions;
+    }
+
+    private void Pesquisar()
+    {
+        // Função que pode ser usada para alguma lógica adicional de pesquisa
+        LoadPessoas();
+        StateHasChanged();
+    }
+
+    private async Task NovoRegistro()
+    {
+        Navigation.NavigateTo("/Cadastros/Pessoas/Pessoa");
+
+    }
+    
+    private async Task<IEnumerable<PessoaModel>> ListaPessoas()
+    {
+        listapessoas = await PessoaService.GetRegistro();
+        return listapessoas;
+    }
+    
+    private async Task OpenPessoaDocumentoModal()
+    {
+        Navigation.NavigateTo("/Cadastros/Pessoas/ListaDocumentos");
+
+    }
+    private async Task OpenPessoaEnderecoModal()
+    {
+        Navigation.NavigateTo("/Cadastros/Pessoas/ListaEndereco");
+
+    }
+    private async Task OpenPessoaFichaCadastro()
+    {
+        Navigation.NavigateTo("/Cadastros/Pessoas/ListaEndereco");
+
+    }
+    private async Task Voltar()
+    {
+        Navigation.NavigateTo("/cadastros/cadastros/");
+    }
+}
+

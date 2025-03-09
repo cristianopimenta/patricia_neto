@@ -1,0 +1,283 @@
+﻿@using System.Runtime.ConstrainedExecution
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject IPanicoMobile panicoService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient http
+
+<MudThemeProvider @rendermode="InteractiveServer" Theme="@_theme" IsDarkMode="_isDarkMode" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+    
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+                               OnClick="@((e) => DrawerToggle())" />
+                <MudImage Src="/imagem/logoOTMZ.png" Alt="OTMZ" Class="ml-3" Width="60" />
+                <MudText Typo="Typo.h5" Class="ml-3" Color="Color.Warning">OTMZ</MudText>
+        <MudText Typo="Typo.subtitle1" Class="ml-3" Color="Color.Surface">- Versão 1.0.0.1</MudText>
+                <MudSpacer />
+                <MudMenu Label="@MenuLabel" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Notifications"
+                         IconColor="Color.Secondary">
+                    @foreach (var alerta in alertas)
+                    {
+                        <MudMenuItem>
+                            <MudCard>
+                                <MudCardContent>
+                                    <MudText Typo="Typo.h3"><strong>Alertas de Pânico</strong></MudText>
+                                    <MudText Typo="Typo.body2">
+                                        @alerta
+                                    </MudText>
+                                </MudCardContent>
+                                <MudCardActions>
+                                    <MudButton Variant="Variant.Text" Color="Color.Primary">Solicitar Atendimento</MudButton>
+                                </MudCardActions>
+                            </MudCard>
+                        </MudMenuItem>
+                    }
+                </MudMenu>
+                <MudMenu Label="Central de Suporte" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.SupportAgent"
+                         IconColor="Color.Secondary">
+                    <MudMenuItem>
+                        <MudCard>
+                            <MudCardContent>
+                                <MudText Typo="Typo.h3"><strong>HELPDESK</strong></MudText>
+                                <MudText Typo="Typo.body2">
+                                    de segunda a sexta, das
+                                    08h00 às 17h30 <br /> (excetos feriados)
+                                    <br />
+                                    <strong>(62) 99862-2512</strong><br />
+
+                                    E-mail: atendimento@otimizesistemas.com.br
+                                </MudText>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton Variant="Variant.Text" Color="Color.Primary">Solicitar Atendimento</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudMenuItem>
+                    <MudMenuItem>
+                        <MudCard>
+                            <MudCardContent>
+                                <MudText Typo="Typo.h3"><strong>PLANTÃO</strong></MudText>
+                                <MudText Typo="Typo.body2">
+                                    de segunda a sexta, das
+                                    17h31 às 07h59<br /> e fianis de semana e feriados o dia todo
+                                    <br />
+                                    <strong>(62) 9 9862-2512</strong><br />
+
+                                    E-mail: atendimento@otimizesistemas.com.br
+                                </MudText>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton Variant="Variant.Text" Color="Color.Primary">Solicitar Atendimento</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudMenuItem>
+
+                </MudMenu>
+                <AuthorizeView>
+                    <Authorized>
+                <MudMenu Label=@($"{@context.User.Identity.Name}")
+                         Variant="Variant.Filled"
+                         EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                         IconColor="Color.Secondary">
+
+                    <MudMenuItem OnClick="Logout" >Sair</MudMenuItem>                   
+                   
+                </MudMenu>
+
+            </Authorized>
+
+            <NotAuthorized>
+              
+            </NotAuthorized>
+        </AuthorizeView>
+
+        <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End">
+        </MudIconButton>
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+
+    <MudMainContent Class="mt-16 pa-4">
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+@code {
+    private bool _drawerOpen = false;
+    private bool _isDarkMode = true;
+    private MudTheme? _theme = null;
+    private int Spacing { get; set; } = 2;
+
+    private IEnumerable<PanicoMobile> alertas = new List<PanicoMobile>();
+    private List<PanicoMobile> novosAlertas = new List<PanicoMobile>();
+    private string MenuLabel => $"Alertas ({novosAlertas.Count})";
+    private bool isCheckingAlerts = false;
+    private CancellationTokenSource _cancellationTokenSource;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        // Inicia a verificação contínua de alertas
+        _cancellationTokenSource = new CancellationTokenSource();
+        _ = CheckForNewAlertsPeriodically(_cancellationTokenSource.Token);
+
+        // Configura o tema
+        _theme = new()
+            {
+                PaletteLight = _lightPalette,
+                PaletteDark = _darkPalette,
+                LayoutProperties = new LayoutProperties()
+            };
+
+   
+    }
+
+    private async Task CheckForNewAlertsPeriodically(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            if (!isCheckingAlerts)
+            {
+                isCheckingAlerts = true;
+
+                try
+                {
+                    await CheckForNewAlerts();
+                }
+                catch (Exception ex)
+                {
+                    // Log or handle exception
+                }
+                finally
+                {
+                    isCheckingAlerts = false;
+                }
+            }
+
+            await Task.Delay(30000, token); // Espera 30 segundos
+        }
+    }
+
+    private async Task Logout()
+    {
+        try
+        {
+            var httpResponse = await http.PostAsync("api/account/logout", null);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                // Redirecionar para a página de login ou home após o logout
+                Navigation.NavigateTo("/", forceLoad: true);
+            }
+            else
+            {
+                Console.WriteLine("Erro ao tentar fazer logout. Código de status: " + httpResponse.StatusCode);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Erro ao fazer logout: " + ex.Message);
+        }
+    }
+
+
+    private async Task CheckForNewAlerts()
+    {
+        var alertasRecebidos = await GetPanicos();
+
+        foreach (var alerta in alertasRecebidos)
+        {
+            if (!novosAlertas.Any(a => a.Id == alerta.Id))
+            {
+                novosAlertas.Add(alerta);
+            }
+        }
+
+        StateHasChanged(); // Atualiza a interface do usuário
+    }
+
+    private async Task<IEnumerable<PanicoMobile>> GetPanicos()
+    {
+        alertas = await panicoService.GetRegistroPanico();
+        return alertas;
+    }
+
+    public void Dispose()
+    {
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+    }
+
+    private void DrawerToggle()
+    {
+        
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private void DarkModeToggle()
+    {
+        _isDarkMode = !_isDarkMode;
+    }
+
+    private readonly PaletteLight _lightPalette = new()
+        {
+            Black = "#110e2d",
+            AppbarText = "#424242",
+            AppbarBackground = "rgba(255,255,255,0.8)",
+            DrawerBackground = "#ffffff",
+            GrayLight = "#e8e8e8",
+            GrayLighter = "#f9f9f9",
+        };
+
+    private readonly PaletteDark _darkPalette = new()
+        {
+            Primary = "#7e6fff",
+            Surface = "#1e1e2d",
+            Background = "#1a1a27",
+            BackgroundGray = "#151521",
+            AppbarText = "#92929f",
+            AppbarBackground = "rgba(26,26,39,0.8)",
+            DrawerBackground = "#1a1a27",
+            ActionDefault = "#74718e",
+            ActionDisabled = "#9999994d",
+            ActionDisabledBackground = "#605f6d4d",
+            TextPrimary = "#b2b0bf",
+            TextSecondary = "#92929f",
+            TextDisabled = "#ffffff33",
+            DrawerIcon = "#92929f",
+            DrawerText = "#92929f",
+            GrayLight = "#2a2833",
+            GrayLighter = "#1e1e2d",
+            Info = "#4a86ff",
+            Success = "#3dcb6c",
+            Warning = "#ffb545",
+            Error = "#ff3f5f",
+            LinesDefault = "#33323e",
+            TableLines = "#33323e",
+            Divider = "#292838",
+            OverlayLight = "#1e1e2d80",
+        };
+
+    public string DarkLightModeButtonIcon => _isDarkMode switch
+    {
+        true => Icons.Material.Rounded.AutoMode,
+        false => Icons.Material.Outlined.DarkMode,
+    };
+}
+

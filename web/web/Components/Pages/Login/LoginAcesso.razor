@@ -1,0 +1,88 @@
+﻿@page "/login/loginacesso"
+
+@layout MainLayout
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using Controller.Services.Autenticacao
+
+@using web.Auth
+@using web.Components.Layout
+@using web.Data.Autenticacao
+
+@inject HttpClient http
+@inject TokenAuthenticationProvider authSateProvider
+@inject NavigationManager navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<MudContainer MaxWidth="MaxWidth.Small">
+
+    <MudText Typo="Typo.h4" Class="mb-4">Login</MudText>
+
+    <EditForm Model="@loginModel" OnValidSubmit="FazerLogin">
+        <MudTextField @bind-Value="loginModel.Email" Label="Email" Required="true" Class="mb-4" />
+        <MudTextField @bind-Value="loginModel.Senha" Label="Senha" Required="true" InputType="InputType.Password" Class="mb-4" />
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="FazerLogin" Class="mt-4">
+            Entrar
+        </MudButton>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(mensagemErro))
+    {
+        <MudAlert Severity="Severity.Error" Class="mt-4">@mensagemErro</MudAlert>
+    }
+</MudContainer>
+
+@code {
+    private UsuarioModel loginModel = new UsuarioModel();
+    private string mensagemErro = string.Empty;
+
+
+    async Task FazerLogin()
+    {
+        try
+        {
+            var loginAsJson = JsonSerializer.Serialize(loginModel);
+            var httpResponse = await http.PostAsync("api/account/login",
+                new StringContent(loginAsJson, Encoding.UTF8, "application/json"));
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var responseAsString = await httpResponse.Content.ReadAsStringAsync();
+
+                // Aqui, deserializa diretamente para um objeto simples
+                var jsonResponse = JsonSerializer.Deserialize<JsonElement>(responseAsString);
+
+                // Acessa diretamente o token dentro do JSON
+                var token = jsonResponse.GetProperty("token").GetProperty("token").GetString();
+
+
+                var customAuthProvider = (Autentica)AuthenticationStateProvider;
+                customAuthProvider.Login(loginModel.Email);
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    // Chama o método de login passando o token
+                    await authSateProvider.Login(token);
+                    navigation.NavigateTo("/");
+                }
+                else
+                {
+                    mensagemErro = "Erro ao obter o token.";
+                }
+            }
+            else
+            {
+                mensagemErro = $"Email ou senha inválidos. {httpResponse.StatusCode}";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensagemErro = "Erro ao tentar fazer login. Tente novamente.";
+            Console.WriteLine($"Erro: {ex.Message}");
+        }
+
+
+    }
+
+}

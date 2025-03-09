@@ -1,0 +1,14 @@
+﻿@inject NavigationManager Navigation
+
+@code {
+    private bool _navigationCalled = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_navigationCalled)
+        {
+            _navigationCalled = true;
+            Navigation.NavigateTo("/login/loginacesso");
+        }
+    }
+}

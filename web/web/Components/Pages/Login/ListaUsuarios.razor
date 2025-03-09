@@ -1,0 +1,274 @@
+﻿@page "/login/listausuarios"
+
+@using Controller.Services.Autenticacao
+
+@inject UsuarioService usuarioService
+@inject MudBlazor.ISnackbar snackBar
+@inject IPopoverService PopoverService
+@inject NavigationManager Navigation
+
+
+<PageTitle>OTMZ</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+
+        <MudGrid style="position: relative;  padding: 50px;">
+            <MudItem xs="12">
+                <MudPaper Class="d-flex align-items-center justify-content-between"
+                          Style="width: 100%; height: 100%; background-color: transparent; box-shadow: none;">
+                    <div class="d-flex align-items-center">
+                        <MudIcon Icon="@Icons.Material.Filled.SupervisedUserCircle" Color="Color.Warning" Size="Size.Large" />
+                        <MudText Class="ml-2" Typo="Typo.h4" Color="@Color.Warning">Lista de usuários</MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+        <MudDivider />
+
+        <MudTabs Elevation="1" Rounded="true" Style="background-color: transparent;padding: 30px;">
+            <MudTabPanel Text="Usuários" ToolTip="Lista de registros">
+
+                <MudGrid Spacing="2">
+                    <MudItem xs="12" md="12">
+                        <MudPaper Class="d-flex align-items-center" Style="padding: 8px;">
+                            <MudSelect T="string" Label="Tipo de Consulta" HelperText="Tipo de consutla" MultiSelection="true"
+                                       SelectedValues="@options">
+                                @foreach (var tipo in Tipobusca)
+                                {
+                                    <MudSelectItem T="string" Value="@tipo">@tipo</MudSelectItem>
+                                }
+                            </MudSelect>
+
+                            <MudTextField T="string" Placeholder="Informe o nome ou email" Label="Buscar" Typo="Typo.input"
+                                          Style="margin-left: 16px; margin-right: 16px;" @bind-Value="searchString"></MudTextField>
+
+                            <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                                       StartIcon="@Icons.Material.Filled.Search" @onclick="Pesquisar"
+                                       Style="border-radius: 0%; width: 150px; height: 35px;">
+                                Consultar
+                            </MudButton>
+                            <MudButton Color="Color.Warning" Variant="Variant.Filled" Class="ml-12"
+                                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="NovoRegistro">
+                                Novo Registro
+                            </MudButton>
+                            <MudButton Color="Color.Error" Variant="Variant.Filled" Class="ml-12"
+                                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                                       Style="border-radius: 0%; width: 150px; height: 35px;" OnClick="Voltar">
+
+                            </MudButton>
+                        </MudPaper>
+                    </MudItem>
+                </MudGrid>
+
+                <MudTable Items="listausuarios" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="Search" @bind-SelectedItem="selectedItem1">
+
+                    <HeaderContent>
+                        <MudTh>Código</MudTh>
+                        <MudTh>Nome</MudTh>
+                        <MudTh>Email</MudTh>
+                        <MudTh>Telefone</MudTh>
+                    </HeaderContent>
+
+                    <RowTemplate Context="_context_usuario">
+                        <MudTd DataLabel="Código">@_context_usuario.Id</MudTd>
+                        <MudTd DataLabel="Nome">@_context_usuario.Nome</MudTd>
+                        <MudTd DataLabel="E-mail">@_context_usuario.Email</MudTd>
+                        <MudTd DataLabel="Telefone">@_context_usuario.Telefone</MudTd>
+
+                        <MudTd>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit"
+                                       OnClick="@(() => EditarUsuario(_context_usuario))">
+                            </MudButton>
+
+
+
+                        </MudTd>
+                    </RowTemplate>
+
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+            </MudTabPanel>
+
+            <MudTabPanel Text="Permissões" ToolTip="Controle de permissoes por usuário">
+                <br /> Permissões
+                <MudGrid>
+                    <MudItem xs="6" md="6">
+                        <MudTextField @bind-Value="usuarioModel.Nome" Label="Nome" Required="true" MaxLength="100" Class="mb-3" Disabled="true" />
+                    </MudItem>
+                    <MudItem xs="6" md="6">
+                        <MudTextField @bind-Value="usuarioModel.Email"
+                                      Label="Email"
+                                      Required="true"
+                                      Class="mb-3" Disabled="true" />
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudSwitch @bind-Value="_portaria" Label="Portaria" Color="Color.Warning" />
+                        <MudCheckBox @bind-Value="_portaria_visualiza" Color="Color.Warning">Visualizar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_portaria_incluir" Color="Color.Warning">Incluir</MudCheckBox>
+                        <MudCheckBox @bind-Value="_portaria_editar" Color="Color.Warning">Alterar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_portaria_deletar" Color="Color.Warning">Excluir</MudCheckBox>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudSwitch @bind-Value="_controleacesso" Label="Controle de Acesso" Color="Color.Warning" />
+                        <MudCheckBox @bind-Value="_controleacesso_visualiza" Color="Color.Warning">Visualizar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_controleacesso_incluir" Color="Color.Warning">Incluir</MudCheckBox>
+                        <MudCheckBox @bind-Value="_controleacesso_editar" Color="Color.Warning">Alterar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_controleacesso_deletar" Color="Color.Warning">Excluir</MudCheckBox>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudSwitch @bind-Value="_comunicacao" Label="Comunicação" Color="Color.Warning" />
+                        <MudCheckBox @bind-Value="_comunicacao_visualiza" Color="Color.Warning">Visualizar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_comunicacao_incluir" Color="Color.Warning">Incluir</MudCheckBox>
+                        <MudCheckBox @bind-Value="_comunicacao_editar" Color="Color.Warning">Alterar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_comunicacao_deletar" Color="Color.Warning">Excluir</MudCheckBox>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudSwitch @bind-Value="_financeiro" Label="Financeiro" Color="Color.Warning" />
+                        <MudCheckBox @bind-Value="_financeiro_visualiza" Color="Color.Warning">Visualizar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_financeiro_incluir" Color="Color.Warning">Incluir</MudCheckBox>
+                        <MudCheckBox @bind-Value="_financeiro_editar" Color="Color.Warning">Alterar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_financeiro_deletar" Color="Color.Warning">Excluir</MudCheckBox>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudSwitch @bind-Value="_relatorio" Label="Relatório" Color="Color.Warning" />
+                        <MudCheckBox @bind-Value="_relatorio_visualiza" Color="Color.Warning">Visualizar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_relatorio_incluir" Color="Color.Warning">Incluir</MudCheckBox>
+                        <MudCheckBox @bind-Value="_relatorio_editar" Color="Color.Warning">Alterar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_relatorio_deletar" Color="Color.Warning">Excluir</MudCheckBox>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudSwitch @bind-Value="_configuracoes" Label="Configurações" Color="Color.Warning" />
+                        <MudCheckBox @bind-Value="_configuracoes_visualiza" Color="Color.Warning">Visualizar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_configuracoes_incluir" Color="Color.Warning">Incluir</MudCheckBox>
+                        <MudCheckBox @bind-Value="_configuracoes_editar" Color="Color.Warning">Alterar</MudCheckBox>
+                        <MudCheckBox @bind-Value="_configuracoes_deletar" Color="Color.Warning">Excluir</MudCheckBox>
+                    </MudItem>
+                </MudGrid>
+            </MudTabPanel>
+
+        </MudTabs>
+
+    </Authorized>
+
+    <NotAuthorized>
+        <MudText>Você não está autorizado a visualizar esta página.</MudText>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private HashSet<string> options { get; set; } = new HashSet<string>();
+    private string[] Tipobusca = { "Ativo", "Inativo", "Todos" };
+    private string? tipoMorador;
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+    private bool _isHabilita = true;
+
+    private string searchString = string.Empty; // Usaremos apenas uma string de busca
+    private List<UsuarioModel> usuario = new();
+    private UsuarioModel usuarioModel = new();
+    private UsuarioModel selectedItem1 = null;
+    private IEnumerable<UsuarioModel> listausuarios = new List<UsuarioModel>();
+
+
+    bool _portaria;
+    bool _controleacesso;
+    bool _comunicacao;
+    bool _financeiro;
+    bool _relatorio;
+    bool _configuracoes;
+
+    public bool _portaria_visualiza { get; set; } = false;
+    public bool _portaria_incluir { get; set; } = false;
+    public bool _portaria_editar { get; set; } = false;
+    public bool _portaria_deletar { get; set; } = false;
+
+    public bool _controleacesso_visualiza { get; set; } = false;
+    public bool _controleacesso_incluir { get; set; } = false;
+    public bool _controleacesso_editar { get; set; } = false;
+    public bool _controleacesso_deletar { get; set; } = false;
+
+    public bool _comunicacao_visualiza { get; set; } = false;
+    public bool _comunicacao_incluir { get; set; } = false;
+    public bool _comunicacao_editar { get; set; } = false;
+    public bool _comunicacao_deletar { get; set; } = false;
+    
+    public bool _financeiro_visualiza { get; set; } = false;
+    public bool _financeiro_incluir { get; set; } = false;
+    public bool _financeiro_editar { get; set; } = false;
+    public bool _financeiro_deletar { get; set; } = false;
+
+    public bool _relatorio_visualiza { get; set; } = false;
+    public bool _relatorio_incluir { get; set; } = false;
+    public bool _relatorio_editar { get; set; } = false;
+    public bool _relatorio_deletar { get; set; } = false;
+
+    public bool _configuracoes_visualiza { get; set; } = false;
+    public bool _configuracoes_incluir { get; set; } = false;
+    public bool _configuracoes_editar { get; set; } = false;
+    public bool _configuracoes_deletar { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPessoas();
+    }
+
+
+
+    private void EditUsuario(int id)
+    {
+        Navigation.NavigateTo($"/login/create/{id}");
+    }
+
+    private async Task DeleteUsuario(int id)
+    {
+
+    }
+
+
+    private async Task<IEnumerable<UsuarioModel>> GetPessoas()
+    {
+        listausuarios = await usuarioService.GetUsuario();
+        return listausuarios;
+    }
+
+    private bool Search(UsuarioModel usuario)
+    {
+        if (string.IsNullOrWhiteSpace(searchString) && options.Count == 0)
+            return true; // Se não houver uma string de busca ou opções selecionadas, mostre todos os itens
+
+        // Verifique se o nome do pet ou tipo do animal contém a string de busca
+        bool matchesSearchString = usuario.Nome?.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false;
+
+        // Verifique se o tipo do animal está entre as opções selecionadas
+        bool matchesOptions = options.Count == 0 || options.Contains(usuario.Email);
+
+        return matchesSearchString && matchesOptions;
+    }
+
+    private void Pesquisar()
+    {
+        // Função que pode ser usada para alguma lógica adicional de pesquisa
+        StateHasChanged();
+    }
+    private async Task NovoRegistro()
+    {
+
+        Navigation.NavigateTo($"/login/create");
+    }
+    private async Task Voltar()
+    {
+        Navigation.NavigateTo("/login/listausuarios/");
+    }
+    void EditarUsuario(UsuarioModel usuario)
+    {
+
+        Navigation.NavigateTo($"/login/create?id={usuario.Id}");
+
+    }
+
+}

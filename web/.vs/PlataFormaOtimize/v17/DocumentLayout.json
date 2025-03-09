@@ -1,0 +1,146 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\projetos\\otmz\\web\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|c:\\projetos\\otmz\\web\\web\\components\\pages\\cadastros\\pessoas\\pessoa.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|solutionrelative:web\\components\\pages\\cadastros\\pessoas\\pessoa.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|c:\\projetos\\otmz\\web\\web\\components\\pages\\cadastros\\empresas\\empresa.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|solutionrelative:web\\components\\pages\\cadastros\\empresas\\empresa.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|c:\\projetos\\otmz\\web\\web\\components\\pages\\cadastros\\empresas\\lista.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|solutionrelative:web\\components\\pages\\cadastros\\empresas\\lista.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|c:\\projetos\\otmz\\web\\web\\components\\pages\\equipamentos\\iot.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|solutionrelative:web\\components\\pages\\equipamentos\\iot.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|c:\\projetos\\otmz\\web\\web\\components\\pages\\equipamentos\\controlid\\configurarcontrolid.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|solutionrelative:web\\components\\pages\\equipamentos\\controlid\\configurarcontrolid.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|c:\\projetos\\otmz\\web\\web\\data\\equipamentos\\controlidmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{924AD4FE-62A4-4324-91D8-347401E411CC}|web\\web.csproj|solutionrelative:web\\data\\equipamentos\\controlidmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Pessoa.razor",
+              "DocumentMoniker": "C:\\projetos\\otmz\\web\\web\\Components\\Pages\\Cadastros\\Pessoas\\Pessoa.razor",
+              "RelativeDocumentMoniker": "web\\Components\\Pages\\Cadastros\\Pessoas\\Pessoa.razor",
+              "ToolTip": "C:\\projetos\\otmz\\web\\web\\Components\\Pages\\Cadastros\\Pessoas\\Pessoa.razor",
+              "RelativeToolTip": "web\\Components\\Pages\\Cadastros\\Pessoas\\Pessoa.razor",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAAwGUAAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-27T13:57:30.543Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Empresa.razor",
+              "DocumentMoniker": "C:\\projetos\\otmz\\web\\web\\Components\\Pages\\Cadastros\\Empresas\\Empresa.razor",
+              "RelativeDocumentMoniker": "web\\Components\\Pages\\Cadastros\\Empresas\\Empresa.razor",
+              "ToolTip": "C:\\projetos\\otmz\\web\\web\\Components\\Pages\\Cadastros\\Empresas\\Empresa.razor",
+              "RelativeToolTip": "web\\Components\\Pages\\Cadastros\\Empresas\\Empresa.razor",
+              "ViewState": "AgIAAOoAAAAAAAAAAAAAAPkAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-27T13:41:56.059Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Lista.razor",
+              "DocumentMoniker": "C:\\projetos\\otmz\\web\\web\\Components\\Pages\\Cadastros\\Empresas\\Lista.razor",
+              "RelativeDocumentMoniker": "web\\Components\\Pages\\Cadastros\\Empresas\\Lista.razor",
+              "ToolTip": "C:\\projetos\\otmz\\web\\web\\Components\\Pages\\Cadastros\\Empresas\\Lista.razor",
+              "RelativeToolTip": "web\\Components\\Pages\\Cadastros\\Empresas\\Lista.razor",
+              "ViewState": "AgIAAJwAAAAAAAAAAAAAALkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-27T13:38:20.988Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Iot.razor",
+              "DocumentMoniker": "C:\\projetos\\otmz\\web\\web\\Components\\Pages\\Equipamentos\\Iot.razor",
+              "RelativeDocumentMoniker": "web\\Components\\Pages\\Equipamentos\\Iot.razor",
+              "ToolTip": "C:\\projetos\\otmz\\web\\web\\Components\\Pages\\Equipamentos\\Iot.razor",
+              "RelativeToolTip": "web\\Components\\Pages\\Equipamentos\\Iot.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-26T21:26:45.341Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ControlIDModel.cs",
+              "DocumentMoniker": "C:\\projetos\\otmz\\web\\web\\Data\\Equipamentos\\ControlIDModel.cs",
+              "RelativeDocumentMoniker": "web\\Data\\Equipamentos\\ControlIDModel.cs",
+              "ToolTip": "C:\\projetos\\otmz\\web\\web\\Data\\Equipamentos\\ControlIDModel.cs",
+              "RelativeToolTip": "web\\Data\\Equipamentos\\ControlIDModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T21:21:43.13Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ConfigurarControlID.razor",
+              "DocumentMoniker": "C:\\projetos\\otmz\\web\\web\\Components\\Pages\\Equipamentos\\ControlID\\ConfigurarControlID.razor",
+              "RelativeDocumentMoniker": "web\\Components\\Pages\\Equipamentos\\ControlID\\ConfigurarControlID.razor",
+              "ToolTip": "C:\\projetos\\otmz\\web\\web\\Components\\Pages\\Equipamentos\\ControlID\\ConfigurarControlID.razor",
+              "RelativeToolTip": "web\\Components\\Pages\\Equipamentos\\ControlID\\ConfigurarControlID.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-26T21:13:39.768Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

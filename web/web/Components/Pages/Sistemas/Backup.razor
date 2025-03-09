@@ -1,0 +1,55 @@
+﻿@page "/sistemas/backup"
+@using web.Controller.Services
+@inject DatabaseService DatabaseService
+@inject NavigationManager Navigation
+
+<MudContainer>
+    <MudText Typo="Typo.h4" Class="mb-4">Backup do Banco de Dados</MudText>
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="StartBackupAsync">
+        Iniciar Backup
+    </MudButton>
+
+    @if (!string.IsNullOrEmpty(Message))
+    {
+        <MudAlert Severity="Severity.Info" Class="mt-4">@Message</MudAlert>
+    }
+</MudContainer>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5">
+    <MudCard>
+        <MudCardContent>
+            <MudText Typo="Typo.h5" Class="mb-3">Informações sobre o Backup Diário</MudText>
+            <MudText>
+                O backup do banco de dados é gerado automaticamente todos os dias às 23:59.
+                Você pode verificar o status do backup acessando a página de backups ou entrando em contato com o suporte se tiver algum problema.
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private string Message = "";
+
+    private async Task StartBackupAsync()
+    {
+        try
+        {
+            // Diretório do backup
+            var backupDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Backups");
+            Directory.CreateDirectory(backupDirectory);
+
+            // Nome do arquivo de backup
+            var backupFilePath = Path.Combine(backupDirectory, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.sql");
+
+            // Chama o serviço de backup injetado
+            await DatabaseService.BackupDatabaseAsync(backupFilePath);
+
+            Message = $"Backup concluído com sucesso! Arquivo salvo em: {backupFilePath}";
+        }
+        catch (Exception ex)
+        {
+            Message = $"Erro ao realizar o backup: {ex.Message}";
+        }
+    }
+}

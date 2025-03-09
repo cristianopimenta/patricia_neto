@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net9.0</TargetFramework>
+    
+   
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="EPPlus" Version="7.6.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.12" />
+		<PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.12" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.12" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.12">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.12">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="MudBlazor" Version="7.2.0" />
+		<PackageReference Include="MySql.Data" Version="9.2.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />	
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />	
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />	
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />	
+		<PackageReference Include="ServiceStack.Common" Version="8.5.2" />
+
+    <PackageReference Include="Accord" Version="3.8.2-alpha" />
+    <PackageReference Include="Emgu.CV" Version="4.10.0.5680" />    
+    <PackageReference Include="OpenCvSharp4" Version="4.10.0.20241108" />
+		
+	</ItemGroup>
+
+	<ItemGroup>
+		<_ContentIncludedByDefault Remove="Components\Compartilhados\Topopadrao.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\ControlID\ConfigurarControlID.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\ControlID\DetalheControlID.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\CreateEquipamento.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\CreateEquipamentoDestino.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\EditEquipamento.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\EditEquipamentoDestino.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\Hikivision\ConfigurarHikivision.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\Hikivision\DetalheHikivision.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\Iot.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\Lista.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\ListaEquipamentoDestino.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\Tsplus\ConfigurarTsPlus.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\Tsplus\DetalheTsPlus.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Equipamentos\Tsplus\Lista.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Panico\Panico.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Comunicacao\Comunicacao.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Clube\Clube.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Clube\Lista.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\BioacessoLegado\Correcoes\Felipetas\PessoasFelipetas.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Portaria\CreatePortaria.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Portaria\EditPortaria.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Portaria\Lista.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Mobile\Cidades\Lista.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Mobile\Condominios\Lista.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Mobile\Estados\CadastroEstado.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Mobile\Estados\EditarEstadoDialog.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Mobile\Estados\Lista.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Mobile\Mobile.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Mobile\Modulos\CadastroModulo.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Mobile\Modulos\EditarModuloDialog.razor" />
+		<_ContentIncludedByDefault Remove="Components\Pages\Mobile\Modulos\Lista.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Controller\Helper\IoT\TsPlus\" />
+	  <Folder Include="Helper\" />
+	</ItemGroup>
+</Project>

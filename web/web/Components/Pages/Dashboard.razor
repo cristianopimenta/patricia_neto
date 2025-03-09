@@ -1,0 +1,102 @@
+﻿@page "/dashboard"
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+<CascadingAuthenticationState>
+    <Authorized>
+        <MudText Align="Align.Center" Class="titulo-text">Qual módulo você quer acessar?</MudText>
+
+        <div class="button-container">
+
+            <MudButton Class="custom-button">
+                <MudImage Src="/imagem/icones/portaria.png" Alt="Portaria" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                <span><strong> PORTARIA</strong></span>
+            </MudButton>
+            <MudButton OnClick="() => Cadastro()" Class="custom-button">
+                <MudImage Src="/imagem/icones/cadastros.png" Alt="Cadastros" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                <div><span style="margin-top: 4px;"><strong> CADASTROS</strong></span></div>
+            </MudButton>
+            <MudButton Class="custom-button">
+                <MudImage Src="/imagem/icones/relatorio.png" Alt="Relatório" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                <span><strong> RELATORIOS</strong></span>
+            </MudButton>
+        </div>
+
+        <div class="button-container">
+            <MudButton OnClick="() => Sistemas()" Class="custom-button">
+                <MudImage Src="/imagem/icones/sistema.png" Alt="Sistema" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                <span><strong> SISTEMA</strong></span>
+            </MudButton>
+            <MudButton OnClick="() => Financeiro()" Class="custom-button">
+                <MudImage Src="/imagem/icones/financeiro.png" Alt="Financeiro" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                <span><strong> FINANCEIRO</strong></span>
+            </MudButton>
+            <MudButton Class="custom-button">
+                <MudImage Src="/imagem/icones/comunicacao.png" Alt="Comunicação" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                <div>
+                    <span style="margin-top: 4px;"><strong>COMUNICAÇÃO</strong></span>
+                </div>
+            </MudButton>
+
+        </div>
+
+        <div class="button-container">
+
+            <MudButton OnClick="() => Geral()" Class="custom-button">
+                <MudImage Src="/imagem/icones/clube.png" Alt="Clube" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                <strong>CLUBE</strong>
+            </MudButton>
+            <MudButton OnClick="() => Geral()" Class="custom-button">
+                <MudImage Src="/imagem/icones/academia.png" Alt="Academia" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                <div>
+                    <span style="margin-top: 4px;"><strong>ACADEMIA</strong></span>
+                </div>
+            </MudButton>
+            <MudButton OnClick="() => Geral()" Class="custom-button">
+                <MudImage Src="/imagem/icones/pilates.png" Alt="Pilates" Width="50" Height="50" Style="margin-bottom: 12px;" />
+                <div>
+                    <span style="margin-top: 4px;"><strong> PILATES</strong></span>
+                </div>
+            </MudButton>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</CascadingAuthenticationState>
+
+@code {
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login/loginacesso");
+    }
+
+    private void NovoUsuario()
+    {
+        Navigation.NavigateTo("/login/create");
+    }
+
+    private void Financeiro()
+    {
+        Navigation.NavigateTo("/Financeiro/Financeiro");
+    }
+    private void Cadastro()
+    {
+        Navigation.NavigateTo("/Cadastros/Cadastros");
+    }
+    private void Sistemas()
+    {
+        Navigation.NavigateTo("/Sistemas/Sistemas");
+    }
+    private void Mobile()
+    {
+        Navigation.NavigateTo("/Mobile/Mobile");
+    }
+
+    private void Geral()
+    {
+        HtipoMorador.TipoMorador = "Pessoas";
+        Navigation.NavigateTo("/Cadastros/Pessoas/Lista");
+    }
+}
